@@ -1,0 +1,79 @@
+{% extends "scanner/layouts/base.html" %}
+
+{% block title %} Scans {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            {% if scan %}
+                                <h5 class="m-b-10">Edit Scan Info</h5>
+                            {% else %}
+                                <h5 class="m-b-10">Add New Scan</h5>
+                            {% endif %}
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Scans</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Add Scan</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Enter Scan Data</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form method="POST" action="{% url 'add_scan' %}">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label>Organization name</label>
+                                                <input name="org_name" type="text" class="form-control" placeholder="Enter name" value="{{ scan.organization_name }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Target</label>
+                                                <input name="scan_target" type="text" class="form-control" placeholder="example.com" value="{{ target }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Scan Configuration</label>
+                                                <span class="input-group-text" id="basic-addon3">{{ chosen_config.name }}</span>
+                                            </div>
+                                            <input name="scan_id" type="hidden" class="form-control" value="{{scan.id}}">
+                                            <input name="config_id" type="hidden" class="form-control" value="{{chosen_config.id}}">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </form>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

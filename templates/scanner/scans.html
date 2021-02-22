@@ -1,0 +1,84 @@
+{% extends "scanner/layouts/base.html" %}
+
+{% block title %} Scans {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Vultec Registered Scans</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#!">Scans</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">All Scans</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <!-- [ table ] start -->
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>{{ msg }} <b>{{ scans|length }}</b></h5>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover sortable">
+                                        <thead>
+                                            <tr class="text-info f-18 hov">
+                                                <th>Organization</th>
+                                                <th>Target</th>
+                                                <th>Scan type</th>
+                                                <th>Last Scan Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for target, scan in scans.items %}
+                                            <tr class="f-16">
+                                                <td>{{ scan.organization_name }}</td>
+                                                <td>{{ target }}</td>
+                                                <td>{{ scan.configuration }}</td>
+                                                {% if scan.last_scan_date %}
+                                                    <td>{{ scan.last_scan_date }}</td>
+                                                {% else %}
+                                                    <td class="btn-msg-warning"><b>{{ scan.scan_status }}</b></td>
+                                                {% endif %}
+                                                <td class="action"><a href="{% url 'add_scan' scan_id=scan.id %}" class="feather icon-edit-2 text-c-purple f-30 hov"></a>  
+                                                    <a class="feather icon-play text-info f-30 hov"></a>
+                                                    <a href="{% url 'delete_scan' scan_id=scan.id %}" class="feather icon-trash-2 text-danger f-30 hov" onclick="return confirm('Are you sure? This will delete all the subdomains and Vulnerabilities found with this scan.')"></a></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ table ] end -->
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
