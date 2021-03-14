@@ -19,6 +19,8 @@ SCANNER_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATE_DIR = os.path.join(SCANNER_DIR, 'templates')
 STATIC_DIR = os.path.join(SCANNER_DIR, 'static')
+SRIPTS_DIR = os.path.join(SCANNER_DIR, 'scripts')
+RESULTS_DIR = os.path.join(SCANNER_DIR, 'scans')
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,7 +33,6 @@ SECRET_KEY = 'gx3nugospy*d#szn6uz5z&6xo9-rj8bg2!)7mc%&hfz+r^t^#o'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 

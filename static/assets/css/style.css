@@ -603,6 +603,14 @@ p.text-muted {
   height: 100vh;
   overflow: auto;
 }
+
+.card-config {
+  max-width: 100vw;
+  margin: auto;
+  padding: 50px;
+  overflow: auto;
+}
+
 .datta-example-modal-content > pre {
   overflow: hidden;
   width: -webkit-fit-content;
@@ -5588,6 +5596,7 @@ body.layout-8 .card:hover {
   outline: none;
 }
 
+
 .table-card .row-table {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -7680,6 +7689,30 @@ a.btn-theme.active {
   -webkit-box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
           box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
   border: 1px solid transparent;
+}
+
+.label-outline-purple{
+  border: 3px solid #a389d4;
+  border-radius: 5px;
+  color: #a389d4;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.label-outline-red{
+  border: 3px solid #f44236;
+  border-radius: 5px;
+  color: #f44236;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.label-outline-yellow{
+  border: 3px solid #f4c22b;
+  border-radius: 5px;
+  color: #f4c22b;
+  font-weight: bold;
+  padding: 5px;
 }
 
 .btn {

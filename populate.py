@@ -11,7 +11,9 @@ django.setup()
 from scanner.models import Scan, Configuration, Domain, WebHost, Vulnerability, RiskLevel, VulnerabilityType, ScanStatus
 
 config1, c = Configuration.objects.get_or_create(name="Subdomain discovery", default=True)
-config2, c = Configuration.objects.get_or_create(name="Full scan", is_active=True, port_scan=True, vulnerability_scan=True, default=True)
+config2, c = Configuration.objects.get_or_create(name="Full scan", web_discovery=True, port_scan=True, vulnerability_scan=True, default=True)
+""" Configuration.objects.get_or_create(name="Test scan", web_discovery=True, port_scan=True, vulnerability_scan=False)
+Configuration.objects.get_or_create(name="Test scan 2", web_discovery=False, port_scan=True, vulnerability_scan=False)
 
 scan1, s = Scan.objects.get_or_create(organization_name='UAM', scan_status=ScanStatus.NEVER_SCANNED.value, configuration=config1)
 scan2, s = Scan.objects.get_or_create(organization_name='HackerOne', scan_status=ScanStatus.SCANNING.value, configuration=config2, last_scan_date=date.today())
@@ -33,4 +35,4 @@ Vulnerability.objects.get_or_create(host=webh2, risk_level=RiskLevel.MODERATE.va
 Vulnerability.objects.get_or_create(host=webh, risk_level=RiskLevel.HIGH.value, vuln_type=VulnerabilityType.DNS.value)
 Vulnerability.objects.get_or_create(host=webh, risk_level=RiskLevel.CRITICAL.value, vuln_type=VulnerabilityType.SQLINJECTION.value)
 Vulnerability.objects.get_or_create(host=webh, risk_level=RiskLevel.MODERATE.value, vuln_type=VulnerabilityType.XSS.value)
-Vulnerability.objects.get_or_create(host=webh2, risk_level=RiskLevel.CRITICAL.value, vuln_type=VulnerabilityType.DNS.value)
+Vulnerability.objects.get_or_create(host=webh2, risk_level=RiskLevel.CRITICAL.value, vuln_type=VulnerabilityType.DNS.value) """

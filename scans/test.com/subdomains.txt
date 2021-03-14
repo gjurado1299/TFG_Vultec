@@ -1,0 +1,6 @@
+account.mgmt.playstation.com
+account.playstation.com
+account.prod-qa.playstation.com
+accounts.api.playstation.com
+accounts.d1-np.api.playstation.com
+accounts.d1-pmgt.api.playstation.com

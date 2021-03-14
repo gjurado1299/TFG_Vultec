@@ -7,7 +7,7 @@ class ScanAdmin(admin.ModelAdmin):
                     'configuration', 'last_scan_date')
 
 class ConfigurationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'is_active', 'port_scan',
+    list_display = ('id', 'name', 'web_discovery', 'port_scan',
                     'subdomain_discovery', 'vulnerability_scan')
 
 class DomainAdmin(admin.ModelAdmin):

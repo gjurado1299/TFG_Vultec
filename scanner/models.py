@@ -28,7 +28,7 @@ class ScanStatus(Enum):
 
 class Configuration(models.Model):
     name = models.CharField(max_length=50, default="New configuration")
-    is_active = models.BooleanField(default=False)
+    web_discovery = models.BooleanField(default=False)
     port_scan = models.BooleanField(default=False)
     subdomain_discovery = models.BooleanField(default=True)
     vulnerability_scan = models.BooleanField(default=False)

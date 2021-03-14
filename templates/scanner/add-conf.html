@@ -1,0 +1,85 @@
+{% extends "scanner/layouts/base.html" %}
+
+{% block title %} Configuration {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Add Scan Configuration</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Configuration</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Add scan configuration</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Basic Componant</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="ml-4">Enter scan details</h5>
+                                <hr>
+                                <div class="row ml-5 ">
+                                    <div class="col-md-10">
+                                        <form method="POST" action="{% url 'add_conf' %}">
+                                            {% csrf_token %}
+                                            <div class="form-group col-md-6">
+                                                <label>Configuration name</label>
+                                                <input name="conf_name" type="text" class="form-control" placeholder="Enter name" value="New Configuration">
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label" for="exampleCheck1">Web Disovery</label>
+                                                <input name="web_discovery" type="checkbox" class="form-check-input ml-2" id="exampleCheck1">
+                                            </div>
+                                            <div class="form-group form-check ml-auto">
+                                                <label class="form-check-label" for="exampleCheck1">Port scan</label>
+                                                <input name="port_scan" type="checkbox" class="form-check-input ml-2" id="exampleCheck1">
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label" for="exampleCheck1">Subdomain discovery</label>
+                                                <input name="subdomain_discovery" type="checkbox" class="form-check-input ml-2" id="exampleCheck1">
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <label class="form-check-label" for="exampleCheck1">Vulnerability Scan</label>
+                                                <input name="vulnerability_scan" type="checkbox" class="form-check-input ml-2" id="exampleCheck1">
+                                            </div>
+                                            <div class="row d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

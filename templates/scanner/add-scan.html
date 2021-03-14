@@ -23,7 +23,7 @@
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Scans</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'scans' %}">Scans</a></li>
                             <li class="breadcrumb-item"><a href="javascript:">Add Scan</a></li>
                         </ul>
                     </div>
@@ -41,24 +41,32 @@
                                 <h5>Enter Scan Data</h5>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <form method="POST" action="{% url 'add_scan' %}">
                                             {% csrf_token %}
-                                            <div class="form-group">
+                                            <div class="form-group col-md-6">
                                                 <label>Organization name</label>
                                                 <input name="org_name" type="text" class="form-control" placeholder="Enter name" value="{{ scan.organization_name }}">
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-md-6">
                                                 <label>Target</label>
                                                 <input name="scan_target" type="text" class="form-control" placeholder="example.com" value="{{ target }}">
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-md-6">
                                                 <label>Scan Configuration</label>
-                                                <span class="input-group-text" id="basic-addon3">{{ chosen_config.name }}</span>
+                                                <span class="input-group-text d-flex justify-content-between" id="basic-addon3">{{ chosen_config.name }}
+                                                    {% if scan %}
+                                                        <a href="{% url 'configuration' select=scan.id %}" class="btn btn-secondary m-0">Change config</a>
+                                                    {% else %}
+                                                        <a href="{% url 'configuration' select=0 %}" class="btn btn-secondary m-0">Change config</a>
+                                                    {% endif %}
+                                                </span>
                                             </div>
                                             <input name="scan_id" type="hidden" class="form-control" value="{{scan.id}}">
                                             <input name="config_id" type="hidden" class="form-control" value="{{chosen_config.id}}">
-                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <div class="text-right">
+                                                <button type="submit" class="btn btn-primary ">Save</button>
+                                            </div>
                                         </form>
                                     </div>
                                     

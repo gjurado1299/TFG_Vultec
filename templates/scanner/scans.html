@@ -60,8 +60,9 @@
                                                     <td class="btn-msg-warning"><b>{{ scan.scan_status }}</b></td>
                                                 {% endif %}
                                                 <td class="action"><a href="{% url 'add_scan' scan_id=scan.id %}" class="feather icon-edit-2 text-c-purple f-30 hov"></a>  
-                                                    <a class="feather icon-play text-info f-30 hov"></a>
-                                                    <a href="{% url 'delete_scan' scan_id=scan.id %}" class="feather icon-trash-2 text-danger f-30 hov" onclick="return confirm('Are you sure? This will delete all the subdomains and Vulnerabilities found with this scan.')"></a></td>
+                                                    <a href="{% url 'run_scan' scan_id=scan.id %}" class="feather icon-play text-info f-30 hov"></a>
+                                                    <a href="{% url 'delete_scan' scan_id=scan.id %}" class="feather icon-trash-2 text-danger f-30 hov" 
+                                                        onclick="return confirm('Are you sure? This will delete all the subdomains and Vulnerabilities found with this scan.')"></a></td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

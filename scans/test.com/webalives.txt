@@ -1,0 +1,8 @@
+https://account.playstation.com:443 [404] [10] [] [AkamaiNetStorage] [104.84.64.145] [account.playstation.com.edgekey.net]
+https://accounts.d1-np.api.playstation.com:443 [403] [296] [Access Denied] [AkamaiGHost] [92.122.236.182] [e11307.b.akamaiedge.net]
+https://accounts.api.playstation.com:443 [406] [807] [HTTP Status 406 – Not Acceptable] [nginx] [23.39.106.105] [accounts.api.playstation.com.edgekey.net]
+http://account.playstation.com:80 [403] [273] [Access Denied] [AkamaiGHost] [104.126.91.233] [account.playstation.com.edgekey.net]
+http://accounts.api.playstation.com:80 [403] [282] [Access Denied] [AkamaiGHost] [23.51.235.200] [accounts.api.playstation.com.edgekey.net]
+http://accounts.d1-np.api.playstation.com:80 [403] [296] [Access Denied] [AkamaiGHost] [23.39.81.220] [e11307.b.akamaiedge.net]
+https://accounts.d1-pmgt.api.playstation.com:443 [403] [297] [Access Denied] [AkamaiGHost] [23.39.103.25] [e10019.b.akamaiedge.net]
+http://accounts.d1-pmgt.api.playstation.com:80 [403] [297] [Access Denied] [AkamaiGHost] [23.39.103.25] [e10019.b.akamaiedge.net]
