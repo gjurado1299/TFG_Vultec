@@ -68,6 +68,8 @@ class WebHost(models.Model):
     description = models.TextField(blank=True)
     port = models.IntegerField()
     web_title = models.CharField(max_length=500)
+    cname = models.CharField(max_length=500)
+    server = models.CharField(max_length=500)
     content_length = models.IntegerField()
     screenshot_path = models.CharField(max_length=200)
     discovered_date = models.DateTimeField(default=timezone.now)

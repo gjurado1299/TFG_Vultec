@@ -37,7 +37,7 @@ def runScripts(scan, target):
                 if domain:
                     domain.ip_address = params[5][:-1]
                     domain.save()
-                    WebHost.objects.create(domain=domain, http_status=int(params[1][:-1]), url=url, port=port, web_title=params[3][:-1], content_length=int(params[2][:-1]))
+                    WebHost.objects.create(domain=domain, http_status=int(params[1][:-1]), url=url, port=port, web_title=params[3][:-1], server=params[4][:-1], cname=params[6][:-1],content_length=int(params[2][:-1]))
 
     scan.scan_stats = ScanStatus.FINISHED
     scan.last_scan_date = timezone.now()
@@ -223,6 +223,10 @@ def scan_info(request, scan_id=None):
         scan = Scan.objects.filter(id=scan_id).first()
         context_dict['scan'] = scan
         context_dict['targets'] = list(Domain.objects.filter(scan=scan))
+        context_dict['webs'] = []
+
+        for target in context_dict['targets']:
+            context_dict['webs'].extend(list(WebHost.objects.filter(domain=target)))
         return render(request, 'scanner/scan-info.html', context=context_dict)
 
     return redirect("/scanner/")

@@ -71,7 +71,38 @@
                                             </p>
                                         </div>
                                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                            <p class="mb-0">Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                                            <p class="mb-0">
+                                                <div class="table-responsive">
+                                                    <table id="data" class="table table-hover">
+                                                        <thead>
+                                                            <tr class="text-info f-18 hov">
+                                                                <th class="col-2">Domain</th>
+                                                                <th class="col-2">Port</th>
+                                                                <th class="col-2">Status Code</th>
+                                                                <th class="col-2">Title</th>
+                                                                <th class="col-2">Content Length</th>
+                                                                <th class="col-2">Server</th>
+                                                                <th class="col-2">C Name</th>
+                                                                <th class="col-2">Discovered Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody >
+                                                            {% for web in webs %}
+                                                            <tr class="f-16">
+                                                                <td>{{ web.domain.name }}</td>
+                                                                <td>{{ web.port }}</td>
+                                                                <td>{{ web.http_status }}</td>
+                                                                <td>{{ web.web_title }}</td>
+                                                                <td>{{ web.content_length }}</td>
+                                                                <td>{{ web.server }}</td>
+                                                                <td>{{ web.cname }}</td>
+                                                                <td>{{ web.discovered_date }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </p>    
                                         </div>
                                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                             <p class="mb-0">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
