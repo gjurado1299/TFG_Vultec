@@ -19,7 +19,7 @@ SCANNER_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATE_DIR = os.path.join(SCANNER_DIR, 'templates')
 STATIC_DIR = os.path.join(SCANNER_DIR, 'static')
-SRIPTS_DIR = os.path.join(SCANNER_DIR, 'scripts')
+SCRIPTS_DIR = os.path.join(SCANNER_DIR, 'scripts')
 RESULTS_DIR = os.path.join(SCANNER_DIR, 'scans')
 
 
@@ -32,7 +32,7 @@ SECRET_KEY = 'gx3nugospy*d#szn6uz5z&6xo9-rj8bg2!)7mc%&hfz+r^t^#o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['161.97.143.54']
 
 # Application definition
 
@@ -90,7 +90,7 @@ if os.getenv('SQLITE', False):
 	}
 else:
 	import dj_database_url
-	DATABASES['default'] = dj_database_url.config(default='postgres://gonxo:tfg2021@localhost:5432/tfg')
+	DATABASES['default'] = dj_database_url.config(default='postgres://gonxo:tfg@2020_GonXo@localhost:5432/tfg')
 
 
 # Password validation

@@ -26,7 +26,7 @@
                                         </div>
 
                                         <div class="col-5 text-right">
-                                            <p class="m-b-0"> View all scans </p>
+                                            <p class="m-b-0"> View all </p>
                                         </div>
                                     </div>
                                     <div class="progress m-t-30" style="height: 7px;">
@@ -46,7 +46,7 @@
                                             <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-target text-c-red f-30 m-r-10"></i>{{total_targets}}</h3>
                                         </div>
                                         <div class="col-4 text-right">
-                                            <p class="m-b-0"> View all targets </p>
+                                            <p class="m-b-0"> View all </p>
                                         </div>
                                     </div>
                                     <div class="progress m-t-30" style="height: 7px;">
@@ -60,13 +60,13 @@
                         <div class="col-md-12 col-xl-3">
                             <div class="card Discovered-subs">
                                 <div class="card-block">
-                                    <h4 class="mb-5">Discovered Subdomains</h4>
+                                    <h4 class="mb-5">Total Subdomains</h4>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-7">
                                             <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-crosshair text-c-purple f-30 m-r-10"></i>{{discovered_subdomains}}</h3>
                                         </div>
                                         <div class="col-5 text-right">
-                                            <p class="m-b-0"> View all subdomains </p>
+                                            <p class="m-b-0"> View all</p>
                                         </div>
                                     </div>
                                     <div class="progress m-t-30" style="height: 7px;">
@@ -80,13 +80,13 @@
                         <div class="col-md-12 col-xl-3">
                             <div class="card Discovered-hosts">
                                 <div class="card-block">
-                                    <h4 class="mb-5">Discovered Hosts</h4>
+                                    <h4 class="mb-5">Total Hosts</h4>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-8">
                                             <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-monitor text-c-yellow f-30 m-r-10"></i>{{discovered_hosts}}</h3>
                                         </div>
                                         <div class="col-4 text-right">
-                                            <p class="m-b-0"> View all hosts </p>
+                                            <p class="m-b-0"> View all </p>
                                         </div>
                                     </div>
                                     <div class="progress m-t-30" style="height: 7px;">
@@ -170,71 +170,32 @@
                             </div>
                         </div>
                         <!--[social-media section] start-->
-                        <div class="col-md-12 col-xl-4">
+                        {% if currently_scanning.count == 0%}
+                        <div>
+                            NO CURRENT SCANS
+                        </div>
+                        {% else %}
+                        <div class="col-md-12 col-xl-8">
                             <div class="card card-social">
-                                <div class="card-block border-bottom">
-                                    <div class="row align-items-center justify-content-center">
-                                        <div>
-                                            <h4 class="mb-2">COMPLETE</h4>
-                                            <p class="mt-3 ml-0">View details</p>
-                                        </div>
-                                        <div class="col text-right">
-                                            <h3>{{latest_scan}}</h3>
-                                            <h5 class="text-c-green mb-0">+{{ latest_subdomains }} <span class="text-muted">Discovered subdomains</span></h5>
-                                        </div>
-                                    </div>
+                                <div class="border-bottom">
+                                    <h4 class="mt-2 ml-2">Currently Scanning:</h4>
                                 </div>
-                                <div class="card-block">
-                                    <div class="row align-items-center justify-content-center card-active">
-                                        <div class="col-6">
-                                            <h6 class="text-center m-b-10"><span class="text-muted m-r-5">Target:</span>{{latest_target}}</h6>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-c-theme" role="progressbar" style="width:60%;height:6px;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
+                                <div class="card-block-fixed">
+                                {% for c in currently_scanning %}
+                                    <div class="border-bottom mt-2 row align-items-center justify-content-center card-active">
+                                        <div class="col-6 mb-2">
+                                            <h6 class="text-center m-b-10"><span class="text-muted m-r-5">Target:</span>{{c.organization_name}}</h6>
                                         </div>
                                         <div class="col-6">
-                                            <h6 class="text-center  m-b-10"><span class="text-muted m-r-5">Scanned on:</span>{{latest_scan.last_scan_date}}</h6>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-c-theme2" role="progressbar" style="width:45%;height:6px;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
+                                            <h6 class="text-center  m-b-10"><span class="text-muted m-r-5">Scanning mode:</span>{{c.configuration}}</h6>
                                         </div>
                                     </div>
+                                {% endfor %}
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                         <!--[social-media section] start-->
-                        <div class="col-md-12 col-xl-4">
-                            <div class="card card-social">
-                                <div class="card-block border-bottom">
-                                    <div class="row align-items-center justify-content-center">
-                                        <div>
-                                            <h4 class="mb-2">COMPLETE</h4>
-                                            <p class="mt-3 ml-0">View details</p>
-                                        </div>
-                                        <div class="col text-right">
-                                            <h3>{{latest_scan}}</h3>
-                                            <h5 class="text-c-green mb-0">+{{ latest_subdomains }} <span class="text-muted">Discovered subdomains</span></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-block">
-                                    <div class="row align-items-center justify-content-center card-active">
-                                        <div class="col-6">
-                                            <h6 class="text-center m-b-10"><span class="text-muted m-r-5">Target:</span>{{latest_target}}</h6>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-c-theme" role="progressbar" style="width:60%;height:6px;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6 class="text-center  m-b-10"><span class="text-muted m-r-5">Scanned on:</span>{{latest_scan.last_scan_date}}</h6>
-                                            <div class="progress">
-                                                <div class="progress-bar progress-c-theme2" role="progressbar" style="width:45%;height:6px;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

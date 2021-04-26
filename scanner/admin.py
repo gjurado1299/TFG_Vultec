@@ -19,9 +19,8 @@ class WebHostAdmin(admin.ModelAdmin):
                     'description', 'port', 'web_title', 'content_length', 'discovered_date')
 
 class VulnerabilityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'host', 'description', 'risk_level',
-                    'vuln_type')
-
+    list_display = ('id', 'host', 'name', 'page', 'description', 'risk_level', 'template',
+                    'protocol', 'extractor','timestamp')
 
 # Register your models here
 admin.site.register(Scan, ScanAdmin)

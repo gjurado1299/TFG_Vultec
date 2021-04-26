@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 from scanner import views
 from django.contrib.auth.views import LogoutView
 
@@ -21,5 +22,6 @@ urlpatterns = [
     path('delete-config/<int:conf_id>/', views.delete_config, name='delete_config'),
     path('register/', views.register_user, name="register"),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('pages/<str:html>/', views.pages, name='pages')
+    path('pages/<str:html>/', views.pages, name='pages'),
+    url(r'^reload_any/$', views.reload_any, name='reload_any')
 ]

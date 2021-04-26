@@ -10,6 +10,28 @@
 
     <script>
         $(document).ready(function() {
-            $('#data').DataTable();
+            $('.data').DataTable({
+                "processing": true
+            });
         } );
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(".reload").click(function (event) {
+                $.ajax({
+                    url: '{% url "reload_any" %}',
+                    data: {
+                        'scan_id': -1,
+                        'target': '',
+                        'option': -1
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        alert("success" + event.target.value)
+                                
+                    }
+                }); 
+            });
+        });
     </script>

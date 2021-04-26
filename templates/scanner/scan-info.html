@@ -14,7 +14,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-12">
                                     <div class="page-header-title">
-                                        <h5 class="m-b-10">Scan Information</h5>
+                                        <h5 class="m-b-10">{{scan.organization_name}} Scan Information</h5>
                                     </div>
                                     <ul class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
@@ -32,8 +32,6 @@
                             <div class="row">
                                 <!-- [ tabs ] start -->
                                 <div class="col-sm-12">
-                                    <h5>{{scan.organization_name}} Scan Information</h5>
-                                    <hr>
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Subdomains</a>
@@ -47,20 +45,20 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent">
                                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                            <p class="mb-0">
+                                            <p class="mb-0 col-md-12">
                                                 <div class="table-responsive">
-                                                    <table id="data" class="table table-hover">
+                                                    <table class="data table table-striped">
                                                         <thead>
-                                                            <tr class="text-info f-18 hov">
-                                                                <th class="col-6">Name</th>
-                                                                <th class="col-3">IP Adress</th>
-                                                                <th class="col-3">Ports discovered</th>
+                                                            <tr class="text-info">
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">IP Adress</th>
+                                                                <th scope="col">Ports discovered</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody >
                                                             {% for target in targets %}
                                                             <tr class="f-16">
-                                                                <td >{{ target.name }}</td>
+                                                                <td scope="row"><b>{{ target.name }}</b></td>
                                                                 <td>{{ target.ip_address }}</td>
                                                                 <td>{{ target.open_ports }}</td>
                                                             </tr>
@@ -70,32 +68,34 @@
                                                 </div>
                                             </p>
                                         </div>
-                                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                             <p class="mb-0">
                                                 <div class="table-responsive">
-                                                    <table id="data" class="table table-hover">
+                                                    <table class="data table table-striped">
                                                         <thead>
                                                             <tr class="text-info f-18 hov">
-                                                                <th class="col-2">Domain</th>
-                                                                <th class="col-2">Port</th>
-                                                                <th class="col-2">Status Code</th>
-                                                                <th class="col-2">Title</th>
-                                                                <th class="col-2">Content Length</th>
-                                                                <th class="col-2">Server</th>
-                                                                <th class="col-2">C Name</th>
-                                                                <th class="col-2">Discovered Date</th>
+                                                                <th>Domain</th>
+                                                                <th>Port</th>
+                                                                <th>Status</th>
+                                                                <th>Title</th>
+                                                                <th>Content Length</th>
+                                                                <th>Server</th>
+                                                                <th>C Name</th>
+                                                                <th>Techs</th>
+                                                                <th>Discovered Date</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody >
                                                             {% for web in webs %}
                                                             <tr class="f-16">
-                                                                <td>{{ web.domain.name }}</td>
+                                                                <td><b>{{ web.domain.name }}</b></td>
                                                                 <td>{{ web.port }}</td>
-                                                                <td>{{ web.http_status }}</td>
+                                                                <td class="status{{web.http_status|make_list|first}}">{{ web.http_status }}</td>
                                                                 <td>{{ web.web_title }}</td>
                                                                 <td>{{ web.content_length }}</td>
                                                                 <td>{{ web.server }}</td>
                                                                 <td>{{ web.cname }}</td>
+                                                                <td>{{ web.technologies }}</td>
                                                                 <td>{{ web.discovered_date }}</td>
                                                             </tr>
                                                             {% endfor %}
@@ -105,7 +105,40 @@
                                             </p>    
                                         </div>
                                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                            <p class="mb-0">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+                                            <p class="mb-0">
+                                                <div class="table-responsive">
+                                                    <table class="data table table-striped">
+                                                        <thead>
+                                                            <tr class="text-info f-18 hov">
+                                                                <th>Host</th>
+                                                                <th>Name</th>
+                                                                <th>Page</th>
+                                                                <th>Description</th>
+                                                                <th>Severity</th>
+                                                                <th>Template</th>
+                                                                <th>Protocol</th>
+                                                                <th>Extractor</th>
+                                                                <th>Timestamp</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody >
+                                                            {% for vuln in vulnerabilities %}
+                                                            <tr class="f-16">
+                                                                <td><b>{{ vuln.host.url }}</b></td>
+                                                                <td>{{ vuln.name }}</td>
+                                                                <td>{{ vuln.page }}</td>
+                                                                <td>{{ vuln.description }}</td>
+                                                                <td><a class="label {{vuln.risk_level}} text-white f-12">{{vuln.risk_level}}</a></td>
+                                                                <td>{{ vuln.template }}</td>
+                                                                <td>{{ vuln.protocol }}</td>
+                                                                <td>{{ vuln.extractor }}</td>
+                                                                <td>{{ vuln.timestamp }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

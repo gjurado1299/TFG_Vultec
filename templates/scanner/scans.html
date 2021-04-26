@@ -39,34 +39,51 @@
                             </div>
                             <div class="card-block table-border-style">
                                 <div class="table-responsive">
-                                    <table class="table table-hover sortable">
-                                        <thead>
-                                            <tr class="text-info f-18 hov">
-                                                <th>Organization</th>
-                                                <th>Target</th>
-                                                <th>Scan type</th>
-                                                <th>Last Scan Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for target, scan in scans.items %}
-                                            <tr class="f-16">
-                                                <td>{{ scan.organization_name }}</td>
-                                                <td>{{ target }}</td>
-                                                <td>{{ scan.configuration }}</td>
-                                                {% if scan.last_scan_date %}
-                                                    <td>{{ scan.last_scan_date }}</td>
-                                                {% else %}
-                                                    <td class="btn-msg-warning"><b>{{ scan.scan_status }}</b></td>
-                                                {% endif %}
-                                                <td class="action"><a href="{% url 'add_scan' scan_id=scan.id %}" class="feather icon-edit-2 text-c-purple f-30 hov"></a>  
-                                                    <a href="{% url 'run_scan' scan_id=scan.id %}" class="feather icon-play text-info f-30 hov"></a>
-                                                    <a href="{% url 'delete_scan' scan_id=scan.id %}" class="feather icon-trash-2 text-danger f-30 hov" 
-                                                        onclick="return confirm('Are you sure? This will delete all the subdomains and Vulnerabilities found with this scan.')"></a></td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                                    {% if scans|length > 0 %}
+                                        <table class="table table-hover sortable">
+                                            <thead>
+                                                <tr class="text-info f-18 hov">
+                                                    <th>Organization</th>
+                                                    <th>Target</th>
+                                                    <th>Scan type</th>
+                                                    <th>Last Scan Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for target, scan in scans.items %}
+                                                <tr class="f-16">
+                                                    <td>{{ scan.organization_name }}</td>
+                                                    <td>{{ target }}</td>
+                                                    <td>{{ scan.configuration }}</td>
+                                                    {% if scan.scan_status == "Finished scan" %}
+                                                        <td>{{ scan.last_scan_date }}</td>
+                                                    {% else %}
+                                                        {% if scan.scan_status == "Error" %}
+                                                            <td class="btn-msg-{{scan.scan_status}} dropdown-toggle" type="button" data-toggle="dropdown"><b>{{ scan.scan_status }}</b>
+                                                                <ul class="dropdown-menu">
+                                                                    <li><a >{{ scan.last_error_log }}</a></li>
+                                                                </ul></td>
+                                                        {% else %}
+                                                            <td class="btn-msg-{{scan.scan_status}}"><b>{{ scan.scan_status }}</b></td>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    <td class="action">
+                                                        <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+                                                            Reload data
+                                                            <ul class="dropdown-menu">
+                                                                <li class="reload" value=0>Subdomains</li>
+                                                                <li class="reload" value=1>Vulnerabilities</li>
+                                                            </ul>
+                                                        </button>
+                                                        <a href="{% url 'add_scan' scan_id=scan.id %}" class="feather icon-edit-2 text-c-purple f-30 hov"></a> 
+                                                        <a href="{% url 'run_scan' scan_id=scan.id %}" class="feather icon-play text-success f-30 hov"></a>
+                                                        <a href="{% url 'delete_scan' scan_id=scan.id %}" class="feather icon-trash-2 text-danger f-30 hov" 
+                                                            onclick="return confirm('Are you sure? This will delete all the subdomains and Vulnerabilities found with this scan.')"></a></td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

@@ -1,15 +1,4 @@
-0-blog.playstation.com
-28blog.de.playstation.com
-28blog.eu.playstation.com
 4theplayers.eu.playstation.com
-93_-blog.playstation.com
-93-official-playstation-blog-for-news-and-video-updat_-blog.playstation.com
-93-playsta_-blog.playstation.com
-93-playstati_-blog.playstation.com
-93-playstatio_-blog.playstation.com
-93-playstation.bl_-blog.playstation.com
-93-playstation._-blog.playstation.com
-93-playstation_-blog.playstation.com
 a1.jp.playstation.com
 a1-np.api.playstation.com
 account.mgmt.playstation.com
@@ -52,7 +41,6 @@ accounts.q2-pqa.api.playstation.com
 accounts.q2-spint.api.playstation.com
 accounts.sp-int.api.playstation.com
 advent.playstation.com
-ae.eu.playstation.com
 aem.playstation.com
 ae.playstation.com
 antman.playstation.com
@@ -62,6 +50,7 @@ api.direct-qa.playstation.com
 api.direct-stage2.playstation.com
 api.direct-stage3.playstation.com
 api.direct-stage.playstation.com
+api.ivaldi2.playstation.com
 api.ivaldi.playstation.com
 api.playstation.com
 app-perms.playstation.com
@@ -110,7 +99,6 @@ blog.it.playstation.com
 blog.ja.playstation.com
 blog.ko.playstation.com
 blog.latam.playstation.com
-blog.nz.playstation.com
 blog.playstation.com
 blog.ru.playstation.com
 blogstage.de.playstation.com
@@ -294,6 +282,7 @@ core-catalog.c1-np.api.playstation.com
 core-catalog.c1-pmgt.api.playstation.com
 core-catalog.c1-pqa.api.playstation.com
 core-catalog.c1-spint.api.playstation.com
+core-catalog.d1-np.api.playstation.com
 core-catalog.d1-pmgt.api.playstation.com
 core-catalog.d1-pqa.api.playstation.com
 core-catalog.d1-spint.api.playstation.com
@@ -350,13 +339,11 @@ core-entitlements.q2-pqa.api.playstation.com
 core-entitlements.q2-spint.api.playstation.com
 cpanel.bps.playstation.com
 creativestudio.eu.playstation.com
-creen-chaos-of-cant-drive-this-hits-ps4-and-ps5-march-19-_-blog.playstation.com
 critic.api.playstation.com
 cr.playstation.com
 cy.playstation.com
 cz.playstation.com
 d1-np.api.playstation.com
-d1-np.store.playstation.com
 d1-pmgt.api.playstation.com
 d1-pqa.api.playstation.com
 d1-spint.api.playstation.com
@@ -376,11 +363,11 @@ daxter.playstation.com
 de.blog.eu.playstation.com
 de.checkout.gear.playstation.com
 dedipower.eu.playstation.com
-de.forums.playstation.com
 de.playstation.com
 designkit.playstation.com
 designkit.poc.playstation.com
 dev.antman.playstation.com
+dev.api.ivaldi2.playstation.com
 dev.api.ivaldi.playstation.com
 devauthor.community.playstation.com
 dev.blog.br.playstation.com
@@ -390,13 +377,16 @@ dev.chat.playstation.com
 dev-debug.asia.playstation.com
 dev.eu.io.playstation.com
 dev.io.playstation.com
+dev.ivaldi2.playstation.com
 dev.ivaldi.playstation.com
 dev.playstation.com
 dev-public.asia.playstation.com
 devsearch.playstation.com
 devstation.nz.playstation.com
 dev.wrapup.playstation.com
+dig20.software.eu.playstation.com
 dig.eu.playstation.com
+dig.playstation.com
 direct.d1-np.playstation.com
 direct.d2-np.playstation.com
 direct.d3-np.playstation.com
@@ -450,14 +440,11 @@ e3.playstation.com
 e3.us.playstation.com
 ear.playstation.com
 ec.playstation.com
-ed-playstation-indies-promotion-comes-to-playstation-stor_-blog.playstation.com
-email.eu.playstation.com
 email.playstation.com
 emailtest.software.eu.playstation.com
 ems-delivery.api.playstation.com
 en.forums.playstation.com
 en.playstation.com
-enting-your-final-nominees-for-the-2nd-annual-impy-awards_-blog.playstation.com
 entitlements.api.playstation.com
 es.blog.eu.playstation.com
 eshop.asia.playstation.com
@@ -481,7 +468,6 @@ faq.anz.playstation.com
 faq.de.playstation.com
 faq.en.playstation.com
 faq.es.playstation.com
-faq.eu.playstation.com
 faq.fr.playstation.com
 faq.it.playstation.com
 faq.nl.playstation.com
@@ -504,7 +490,6 @@ forms-qa.playstation.com
 forms.software.eu.playstation.com
 forms-stage.playstation.com
 forumadsales.software.eu.playstation.com
-forumadsalesstage.software.eu.playstation.com
 forum.fr.playstation.com
 forums.mx.playstation.com
 forums.us.playstation.com
@@ -513,7 +498,6 @@ fp.e3.playstation.com
 fp.profiles.us.playstation.com
 fr.blog.eu.playstation.com
 fr.checkout.gear.playstation.com
-fr.forums.playstation.com
 fr.playstation.com
 gamelist.api.playstation.com
 gamescom.eu.playstation.com
@@ -586,6 +570,7 @@ image-ps4.api.playstation.com
 images.eu.playstation.com
 image.txn-email.playstation.com
 infamoussecondson.eu.playstation.com
+info-playstation.com
 ingamemanuals.software.eu.playstation.com
 in.playstation.com
 int.api.playstation.com
@@ -596,6 +581,7 @@ io.playstation.com
 is.playstation.com
 it.blog.eu.playstation.com
 it.playstation.com
+ivaldi2.playstation.com
 ivaldi.playstation.com
 jakx.playstation.com
 jenkins-global.pdc.playstation.com
@@ -644,8 +630,6 @@ latino.playstation.com
 lbpinternship.eu.playstation.com
 lbpkarting.software.eu.playstation.com
 lbpvitabeta.us.playstation.com
-library.e1-np.playstation.com
-library.mgmt.playstation.com
 library.playstation.com
 link.asia.playstation.com
 link.eu.playstation.com
@@ -661,14 +645,18 @@ live.secure.eu.playstation.com
 login.playstation.com
 loveandlive.playstation.com
 ltip.accounts.api.playstation.com
+ltip.accounts.idmapper.api.playstation.com
+ltip.core-catalog.api.playstation.com
 ltip.core-entitlements.api.playstation.com
 ltip-origin-lvb.accounts.api.playstation.com
 ltip-origin-lvp.accounts.api.playstation.com
+ltip.wallets.api.playstation.com
 lumos.eu.playstation.com
 lu.playstation.com
 magazine.on.playstation.com
 magazine.on.us.playstation.com
 mail102a.c1.jp.playstation.com
+mail103a.c1.jp.playstation.com
 mail104a.c1.jp.playstation.com
 mail105a.c2.jp.playstation.com
 mail106a.c2.jp.playstation.com
@@ -741,10 +729,8 @@ m.uk.playstation.com
 music.api.playstation.com
 m.us.playstation.com
 mx.playstation.com
-my.e1-np.playstation.com
 my.playstation.com
 mypsn.eu.playstation.com
-nachalos.www.playstation.com
 nagiosxi.playstation.com
 network.eu.playstation.com
 newsletters.eu.playstation.com
@@ -769,6 +755,7 @@ origin-br.playstation.com
 origin-eugdev.playstation.com
 origin-eugqa.playstation.com
 origin-euqa.playstation.com
+origin-pdceu-community.playstation.com
 origin-psplus.eu.playstation.com
 origin-stage.playstation.com
 origin-us-east-1.stage.io.playstation.com
@@ -790,6 +777,9 @@ pe.playstation.com
 pid.us.playstation.com
 players-met.api.playstation.com
 playfestislands.eu.playstation.com
+playstation20.eu.playstation.com
+playstation20.software.eu.playstation.com
+*.playstation.com
 playstation.com
 playstationna.community.us.playstation.com
 playstationvue.us.playstation.com
@@ -894,7 +884,6 @@ qa.wrapup.playstation.com
 r241.email.playstation.com
 r242.email.playstation.com
 rae.us.playstation.com
-ratchetandclanknexus.eu.playstation.com
 rcforum.us.playstation.com
 rd.playstation.com
 rdwest.playstation.com
@@ -905,7 +894,6 @@ reserve.jp.playstation.com
 retailerreturnsstage.software.eu.playstation.com
 retailers.eu.playstation.com
 retail.support.eu.playstation.com
-returns_-four-months-of-offers-for-playstation-games-and_-blog.playstation.com
 returns.support.eu.playstation.com
 rgprd.us.playstation.com
 risetohonor.playstation.com
@@ -945,7 +933,6 @@ shop.us.playstation.com
 signup.software.eu.playstation.com
 since95.eu.playstation.com
 si.playstation.com
-siren.playstation.com
 six1.playstation.com
 six2.playstation.com
 six.playstation.com
@@ -956,8 +943,6 @@ smetrics.eu.playstation.com
 smetrics.us.playstation.com
 sms.playstation.com
 snp.jp.playstation.com
-social.e1-np.api.playstation.com
-social.mgmt.playstation.com
 social.playstation.com
 socom2.playstation.com
 socom3.playstation.com
@@ -966,7 +951,6 @@ software.eu.playstation.com
 sonarqube.playstation.com
 soporte.latam.playstation.com
 soporte.playstation.com
-sorcery.playstation.com
 source.playstation.com
 source.us.playstation.com
 spider-man.playstation.com
@@ -976,6 +960,7 @@ sp-int.playstation.com
 sp-int.store.playstation.com
 sp-int.tools.playstation.com
 stage.antman.playstation.com
+stage.api.ivaldi2.playstation.com
 stage.api.ivaldi.playstation.com
 stagea.us.playstation.com
 stage.br.playstation.com
@@ -983,6 +968,7 @@ stage.cdn.us.playstation.com
 stage.chat.playstation.com
 stage.community.us.playstation.com
 stage.io.playstation.com
+stage.ivaldi2.playstation.com
 stage.ivaldi.playstation.com
 stage.my.playstation.com
 stage.playstation.com
@@ -1033,6 +1019,17 @@ sv.playstation.com
 taiwan.playstation.com
 tearaway.eu.playstation.com
 telemetry.api.playstation.com
+telemetry-cii.api.playstation.com
+telemetry-cii.e1-np.api.playstation.com
+telemetry-cii.prod-qa.api.playstation.com
+telemetry-cii.sp-int.api.playstation.com
+telemetry-console.api.playstation.com
+telemetry-console.e1-np.api.playstation.com
+telemetry-console.prod-qa.api.playstation.com
+telemetry-console.sp-int.api.playstation.com
+telemetry-sbahn.api.playstation.com
+telemetry-sbahn.e1-np.api.playstation.com
+telemetry-sbahn.sp-int.api.playstation.com
 test.blog.eu.playstation.com
 testing.software.eu.playstation.com
 thegetaway.playstation.com
@@ -1075,6 +1072,7 @@ usauthor.qa2.playstation.com
 usauthor.qa.playstation.com
 usauthor.stage.playstation.com
 userguides.eu.playstation.com
+userguides.playstation.com
 usgauthor.dev.playstation.com
 usgauthor.qa.playstation.com
 usgdev.playstation.com
@@ -1090,7 +1088,6 @@ video.api.playstation.com
 video.playstation.com
 videostore.au.playstation.com
 videostore-cdn.eu.playstation.com
-videostore.de.playstation.com
 videostore.es.playstation.com
 videostore.uk.playstation.com
 videounlimitedpromo.us.playstation.com
@@ -1129,8 +1126,7 @@ wallets.q1-spint.api.playstation.com
 wallets.q2-pqa.api.playstation.com
 wallets.q2-spint.api.playstation.com
 wallets.spint.api.playstation.com
-webcheckout.e1-np.playstation.com
-webcheckout.mgmt.playstation.com
+webb-us.playstation.com
 webcluster.playstation.com
 webdisk.bps.playstation.com
 web.e1-np.playstation.com
@@ -1144,8 +1140,6 @@ web.mgmt.playstation.com
 web.np.playstation.com
 web.prod-qa.playstation.com
 web.sp-int.playstation.com
-webstore.e1-np.playstation.com
-webstore.mgmt.playstation.com
 webstore.playstation.com
 web-toolbar.playstation.com
 webtrends.eu.playstation.com
@@ -1175,10 +1169,8 @@ www.betatest.us.playstation.com
 www.blog.playstation.com
 www.bound.playstation.com
 www.bps.playstation.com
-www.br.playstation.com
 www.ca.playstation.com
 www.checkout.playstation.com
-www.cl.playstation.com
 www.community.eu.playstation.com
 www.community.playstation.com
 www.community.us.playstation.com
@@ -1255,7 +1247,6 @@ www.laco.wallets.q1-pmgt.api.playstation.com
 www.laco.wallets.q1-pqa.api.playstation.com
 www.laco.wallets.q1-spint.api.playstation.com
 www.la.playstation.com
-www.latam.playstation.com
 www.latino.playstation.com
 www.library.playstation.com
 www.littlebigplanet.playstation.com
@@ -1279,6 +1270,7 @@ www.nz.playstation.com
 www.onlinesafetyreport.playstation.com
 www.parentsof.playstation.com
 www.playfestislands.eu.playstation.com
+www.playstation20.eu.playstation.com
 www.playstation.com
 www.pl.playstation.com
 www.pre-returns.support.eu.playstation.com
@@ -1307,7 +1299,6 @@ www.shape.us.playstation.com
 www.siren.playstation.com
 www.slycooper.playstation.com
 www.sms.playstation.com
-www.social.playstation.com
 www.socom3.playstation.com
 www.sp-int.store.playstation.com
 wwwstage.community.playstation.com

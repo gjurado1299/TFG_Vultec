@@ -2,27 +2,12 @@ from django.db import models
 from enum import Enum
 from django.utils import timezone
 
-class RiskLevel(Enum):
-    LOW = 'Low'
-    MODERATE = 'Moderate'
-    HIGH = 'High'
-    CRITICAL = 'Critical'
-
-
-
-class VulnerabilityType(Enum):
-    DEFAULT = ''
-    XSS = 'Cross site scripting'
-    SQLINJECTION = 'SQL Injection'
-    DNS = 'Denial of Service'
-
-    def __str__(self):
-        return str(self.value)
-
+from scanner.managers import VulnerabilityManager
 
 class ScanStatus(Enum):
     NEVER_SCANNED = 'Never scanned'
     SCANNING = 'Scanning'
+    ERROR = 'Error'
     FINISHED = 'Finished scan'
 
 
@@ -45,6 +30,7 @@ class Scan(models.Model):
     scan_status = models.CharField(max_length=100, choices=[(tag, tag.value) for tag in ScanStatus], default=ScanStatus.NEVER_SCANNED)
     configuration = models.ForeignKey(Configuration, on_delete=models.CASCADE)
     last_scan_date = models.DateTimeField(null=True)
+    last_error_log = models.CharField(max_length=500, default="")
 
     def __str__(self):
         return self.organization_name
@@ -52,9 +38,9 @@ class Scan(models.Model):
 
 class Domain(models.Model):
     name = models.CharField(max_length=100, null=False)
-    scan = models.ForeignKey(Scan, on_delete=models.CASCADE)
+    scan = models.ForeignKey(Scan, on_delete=models.CASCADE, db_index=True)
     ip_address = models.CharField(max_length=100, default="")
-    open_ports = models.CharField(max_length=100, default="")
+    open_ports = models.CharField(max_length=500, default="")
     start_domain = models.BooleanField(default=False)
 
     def __str__(self):
@@ -62,30 +48,38 @@ class Domain(models.Model):
 
 
 class WebHost(models.Model):
-    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
-    http_status = models.IntegerField()
-    url = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    port = models.IntegerField()
-    web_title = models.CharField(max_length=500)
-    cname = models.CharField(max_length=500)
-    server = models.CharField(max_length=500)
-    content_length = models.IntegerField()
-    screenshot_path = models.CharField(max_length=200)
-    discovered_date = models.DateTimeField(default=timezone.now)
+    domain = models.ForeignKey(Domain, on_delete=models.CASCADE, db_index=True, related_name="hosts")
+    http_status = models.IntegerField(null=True)
+    url = models.CharField(max_length=200, null=True)
+    description = models.TextField(blank=True, null=True)
+    port = models.IntegerField(null=True)
+    web_title = models.CharField(max_length=500, null=True)
+    cname = models.CharField(max_length=500, null=True)
+    server = models.CharField(max_length=500, null=True)
+    content_length = models.IntegerField(null=True)
+    screenshot_path = models.CharField(max_length=200, null=True)
+    technologies = models.CharField(max_length=500, null=True)
+    discovered_date = models.DateTimeField(default=timezone.now, null=True)
 
     def __str__(self):
         return self.url
 
 
 class Vulnerability(models.Model):
-    host = models.ForeignKey(WebHost, on_delete=models.CASCADE)
-    description = models.TextField(blank=True)
-    risk_level = models.CharField(max_length=100, choices=[(tag, tag.value) for tag in RiskLevel], default=RiskLevel.LOW)
-    vuln_type = models.CharField(max_length=100, choices=[(tag, tag.value) for tag in VulnerabilityType], default=VulnerabilityType.DEFAULT)
+    host = models.ForeignKey(WebHost, on_delete=models.CASCADE, db_index=True, related_name="vulnerabilities")
+    name = models.CharField(max_length=100, null=True)
+    page = models.CharField(max_length=500, null=True)
+    description = models.TextField(blank=True, null=True)
+    risk_level = models.CharField(max_length=100, null=True)
+    template = models.CharField(max_length=500, null=True)
+    protocol = models.CharField(max_length=200, null=True)
+    extractor = models.CharField(max_length=500, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    objects = VulnerabilityManager()
     
     def __str__(self):
-        return "{}: {}".format(self.vuln_type, self.risk_level)
+        return "{}: {}".format(self.name, self.risk_level)
 
     class Meta:
         verbose_name_plural = 'Vulnerabilities'

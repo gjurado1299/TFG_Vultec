@@ -9,40 +9,128 @@ from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 from .forms import LoginForm
-from scanner.models import Scan, Configuration, Domain, WebHost, Vulnerability, RiskLevel, VulnerabilityType, ScanStatus
+from scanner.models import Scan, Configuration, Domain, WebHost, Vulnerability, ScanStatus
 from django.utils import timezone
 
 from django.conf import settings as conf_settings
 import subprocess
 import threading
+import json
+import time
 
+
+def chargeDomains(scan, target):
+    with open(conf_settings.RESULTS_DIR+'/'+target+'/subdomains.txt', 'r') as fin:
+        lines = fin.read().splitlines()
+        for line in lines:
+            Domain.objects.get_or_create(name=line, scan=scan)
+
+def chargeVulnerabilities(target):
+    with open(conf_settings.RESULTS_DIR+'/'+target+'/nuclei_results_draft.txt', 'r') as f:
+        for line in f:
+            data = {}
+            data = json.loads(line)
+            extracted = ''
+            host = WebHost.objects.filter(url=data.get('host','')).first()
+
+            #if 'extracted_results' in data:
+            #    extracted  = '|'.join(data['extracted_results'])
+            if host:
+                Vulnerability.objects.get_or_create(host=host, name=data['info']['name'], page=data['matched'].replace(data['host'], ''), description=data['info'].get('description',''), risk_level=data['info']['severity'], template=data['templateID'], protocol=data['type'], extractor=extracted)
+    
 
 def runScripts(scan, target):
-    if scan.configuration.subdomain_discovery:
-        subprocess.call([str(conf_settings.SRIPTS_DIR)+'/find_subdomains.sh', '-d', target, '-all']) 
-        with open(conf_settings.RESULTS_DIR+'/'+target+'/subdomains.txt', 'r') as fin:
-            lines = fin.read().splitlines()
-            for line in lines:
-                Domain.objects.create(name=line, scan=scan, ip_address='', open_ports='')
-    
-    if scan.configuration.web_discovery:
-        subprocess.call([str(conf_settings.SRIPTS_DIR)+'/web_alives.sh', target ]) 
-        with open(conf_settings.RESULTS_DIR+'/'+target+'/webalives.txt', 'r') as fin:
-            lines = fin.read().splitlines()
-            for line in lines:
-                params = line.split(' [')
-                url = params[0]
-                _, domain_name, port = url.split(':')
-                domain = Domain.objects.filter(name=domain_name[2:]).first()
-                if domain:
-                    domain.ip_address = params[5][:-1]
-                    domain.save()
-                    WebHost.objects.create(domain=domain, http_status=int(params[1][:-1]), url=url, port=port, web_title=params[3][:-1], server=params[4][:-1], cname=params[6][:-1],content_length=int(params[2][:-1]))
+    try:
+        scan.last_error_log = ""
+        if scan.configuration.subdomain_discovery:
+            print("DISCOVERING SUBDOMAINS thread nº {}".format(threading.get_ident()))
+            subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/find_subdomains.sh', '-d', target, '-all']) 
+            chargeDomains(scan, target)
 
-    scan.scan_stats = ScanStatus.FINISHED
-    scan.last_scan_date = timezone.now()
-    scan.save()
+        if scan.configuration.port_scan:
+            print("DISCOVERING PORTS thread nº {}".format(threading.get_ident()))
+            subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/port_scan.sh', target])
+            with open(conf_settings.RESULTS_DIR+'/'+target+'/ports_discovered.txt', 'r') as fin:
+                for line in fin:
+                    data = {}
+                    data = json.loads(line)
+                    domain = Domain.objects.filter(name=data['host']).first()
 
+                    if domain:
+                        port = data.get('port','')
+                        if domain.open_ports == "":
+                            domain.open_ports = port
+                        else:
+                            if str(port) not in domain.open_ports and port != '':
+                                domain.open_ports += ", {}".format(port)
+
+                        domain.save()
+
+
+        if scan.configuration.web_discovery:
+            print("DISCOVERING WEBS thread nº {}".format(threading.get_ident()))
+            subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/web_alives.sh', target ]) 
+
+            with open(conf_settings.RESULTS_DIR+'/'+target+'/webalives.txt', 'r') as fin:
+                with open(conf_settings.RESULTS_DIR+'/'+target+'/webalives_scan.txt', 'w') as fout:
+                    for line in fin:
+                        data = {}
+                        data = json.loads(line)
+                        
+                        url = data.get('url','')
+                        _, domain_name, port = url.split(':')
+                        domain = Domain.objects.filter(name=domain_name[2:]).first()
+                        if domain:
+                            
+                            domain.ip_address = data.get('host', '')
+                            domain.save()
+                            cname = ''
+                            techs = ''
+
+                            if 'cnames' in data:
+                                cname = ', '.join(data['cnames'])
+
+                            if 'technologies' in data:
+                                techs = ', '.join(data['technologies'])
+
+                            WebHost.objects.get_or_create(domain=domain, http_status=data.get('status-code', int()), url=url, port=port, web_title=data.get('title',''), server=data.get('webserver',''), 
+                                                        cname=cname, content_length=data.get('content-length', int()), technologies=techs)
+                            fout.write(url+"\n")
+        
+        if scan.configuration.vulnerability_scan:
+            print("DISCOVERING VULNERABILITIES thread nº {}".format(threading.get_ident()))
+            subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/vulnerabilities.sh', target ]) 
+            chargeVulnerabilities(target)
+
+        scan.scan_status = ScanStatus.FINISHED.value
+
+    except Exception as e:
+        print("SCAN ERROR: {}".format(e))
+        scan.scan_status = ScanStatus.ERROR.value
+        scan.last_error_log = str(e)
+        
+    finally:
+        print("SCAN FINISHED")
+        scan.last_scan_date = timezone.now()
+        scan.save()
+
+
+def reload_any(request):
+    print("RELOADING")
+
+    scan_id = request.GET.get('scan_id', -1)
+    target = request.GET.get('target', '')
+    option = request.GET.get('option', -1)
+    scan = Scan.objects.filter(id=scan_id).first()
+    print("RELOADING SCAN {} TARGET {} OPTION {}".format(scan.organization, target, option))
+    option = -1 
+    if option == 0:
+        chargeDomains(scan, target)
+    elif option == 1:
+        print("RELOADING VULNS")
+        chargeVulnerabilities(target)
+
+    return redirect("/scanner/scans/")
 
 @login_required(login_url="/scanner/login/")
 def index(request):
@@ -53,8 +141,9 @@ def index(request):
     context_dict['total_targets'] = Domain.objects.filter(start_domain=True).count()
     context_dict['discovered_subdomains'] = Domain.objects.filter(start_domain=False).count()
     context_dict['discovered_hosts'] = WebHost.objects.count()
-    context_dict['vulnerabilities'] = list(Vulnerability.objects.all().order_by('risk_level')[0:5])
+    context_dict['vulnerabilities'] = list(Vulnerability.objects.preferred_order()[0:5])
     context_dict['latest_scan'] = Scan.objects.all().exclude(last_scan_date=None).order_by('-last_scan_date').first()
+    context_dict['currently_scanning'] = Scan.objects.filter(scan_status=ScanStatus.SCANNING.value)
     context_dict['latest_subdomains'] = Domain.objects.filter(scan=context_dict['latest_scan'], start_domain=False).count()
     context_dict['latest_target'] = Domain.objects.filter(scan=context_dict['latest_scan'], start_domain=True).first()
 
@@ -119,10 +208,10 @@ def run_scan(request, scan_id=None):
         scan.scan_status = ScanStatus.SCANNING.value
         scan.save()
         target = Domain.objects.filter(scan=scan, start_domain=True).first().name
-        t = threading.Thread(name='runScripts', target=runScripts, args=(scan, target))
+        t = threading.Thread(name='runScripts', target=runScripts, args=(scan, target), daemon=True)
         t.start()
     
-    return redirect("/scanner/")
+    return redirect("/scanner/scans/")
 
 
 @login_required(login_url="/scanner/login/")
@@ -220,13 +309,35 @@ def scan_info(request, scan_id=None):
     context_dict['organizations'] = Scan.objects.all()
 
     if scan_id:
+        start = time.time()
         scan = Scan.objects.filter(id=scan_id).first()
-        context_dict['scan'] = scan
-        context_dict['targets'] = list(Domain.objects.filter(scan=scan))
-        context_dict['webs'] = []
+        end = time.time()
+        print("Time finding scan: {}".format(end-start))
 
+        context_dict['scan'] = scan
+        start = time.time()
+        context_dict['targets'] = list(Domain.objects.filter(scan=scan))
+        end = time.time()
+        print("Time filtering targets: {}".format(end-start))
+
+        context_dict['webs'] = []
+        context_dict['vulnerabilities'] = []
+
+        start = time.time()
         for target in context_dict['targets']:
-            context_dict['webs'].extend(list(WebHost.objects.filter(domain=target)))
+            if target.hosts.count() > 0:
+                context_dict['webs'].extend(list(target.hosts.all()))
+        end = time.time()
+        print("Time filtering webs: {}".format(end-start))
+
+        start = time.time()
+        for web in context_dict['webs']:
+            if web.vulnerabilities.count() > 0:
+                context_dict['vulnerabilities'].extend(list(web.vulnerabilities.all()))
+            
+        end = time.time()
+        print("Time filtering vulnerabilities: {}".format(end-start))
+
         return render(request, 'scanner/scan-info.html', context=context_dict)
 
     return redirect("/scanner/")

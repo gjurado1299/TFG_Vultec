@@ -8,7 +8,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 
 django.setup()
 
-from scanner.models import Scan, Configuration, Domain, WebHost, Vulnerability, RiskLevel, VulnerabilityType, ScanStatus
+from scanner.models import Scan, Configuration, Domain, WebHost, Vulnerability, ScanStatus
 
 config1, c = Configuration.objects.get_or_create(name="Subdomain discovery", default=True)
 config2, c = Configuration.objects.get_or_create(name="Full scan", web_discovery=True, port_scan=True, vulnerability_scan=True, default=True)

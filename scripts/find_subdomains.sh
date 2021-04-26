@@ -6,7 +6,7 @@ LIGHT_B='\033[1;34m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-PATH_RES="/home/kali/UNIVERSIDAD/TFG/Vultec/scans"
+PATH_RES="/home/gonxo/Vultec/scans"
 PATH_OFA=$(find ~ -name "OneForAll")
 
 ################################ Tool functions ################################
@@ -22,7 +22,7 @@ SubFinder(){
 
 Amass(){
     echo -e "${YELLOW}Running ${LIGHT_G}Amass${YELLOW}...${NC}"
-    amass enum -passive -timeout 10 -silent -min-for-recursive 2 -d $1 -o $PATH_RES/$domain_selected/subdomains_Amass.txt &> /dev/null;
+    amass enum -nolocaldb -passive -timeout 10 -silent -min-for-recursive 2 -d $1 -o $PATH_RES/$domain_selected/subdomains_Amass.txt &> /dev/null;
 }
 
 OneForAll(){
