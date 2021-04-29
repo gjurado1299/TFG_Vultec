@@ -68,7 +68,7 @@ class WebHost(models.Model):
 class Vulnerability(models.Model):
     host = models.ForeignKey(WebHost, on_delete=models.CASCADE, db_index=True, related_name="vulnerabilities")
     name = models.CharField(max_length=100, null=True)
-    page = models.CharField(max_length=500, null=True)
+    page = models.CharField(max_length=1000, null=True)
     description = models.TextField(blank=True, null=True)
     risk_level = models.CharField(max_length=100, null=True)
     template = models.CharField(max_length=500, null=True)

@@ -25,19 +25,26 @@ def chargeDomains(scan, target):
         for line in lines:
             Domain.objects.get_or_create(name=line, scan=scan)
 
+    print("Finished charging domains")
+
 def chargeVulnerabilities(target):
     with open(conf_settings.RESULTS_DIR+'/'+target+'/nuclei_results_draft.txt', 'r') as f:
+        i = 0
         for line in f:
             data = {}
             data = json.loads(line)
             extracted = ''
             host = WebHost.objects.filter(url=data.get('host','')).first()
-
+            i += 1
+            print("Line number {}".format(i), end="\r")
             #if 'extracted_results' in data:
             #    extracted  = '|'.join(data['extracted_results'])
             if host:
+                
                 Vulnerability.objects.get_or_create(host=host, name=data['info']['name'], page=data['matched'].replace(data['host'], ''), description=data['info'].get('description',''), risk_level=data['info']['severity'], template=data['templateID'], protocol=data['type'], extractor=extracted)
     
+    print("Finished charging vulnerabilities")
+
 
 def runScripts(scan, target):
     try:
@@ -105,7 +112,7 @@ def runScripts(scan, target):
         scan.scan_status = ScanStatus.FINISHED.value
 
     except Exception as e:
-        print("SCAN ERROR: {}".format(e))
+        print("SCAN ERROR: {}".format(e.__traceback__s))
         scan.scan_status = ScanStatus.ERROR.value
         scan.last_error_log = str(e)
         
@@ -116,20 +123,21 @@ def runScripts(scan, target):
 
 
 def reload_any(request):
-    print("RELOADING")
-
-    scan_id = request.GET.get('scan_id', -1)
+    scan_id = int(request.GET.get('scan_id', -1))
     target = request.GET.get('target', '')
-    option = request.GET.get('option', -1)
+    option = int(request.GET.get('option', -1))
     scan = Scan.objects.filter(id=scan_id).first()
-    print("RELOADING SCAN {} TARGET {} OPTION {}".format(scan.organization, target, option))
-    option = -1 
+    
     if option == 0:
         chargeDomains(scan, target)
     elif option == 1:
-        print("RELOADING VULNS")
         chargeVulnerabilities(target)
 
+    scan.scan_status = ScanStatus.FINISHED.value
+    if scan.last_scan_date is None:
+        scan.last_scan_date = timezone.now()
+
+    scan.save()
     return redirect("/scanner/scans/")
 
 @login_required(login_url="/scanner/login/")
@@ -242,7 +250,7 @@ def add_scan(request, scan_id=None, chosen=None):
             
             return redirect("/scanner/scans/")
         
-        context_dict['chosen_config'] = Configuration.objects.all().filter(name="Subdomain discovery").first()
+        context_dict['chosen_config'] = Configuration.objects.all().filter(name="Full scan").first()
 
     else:
         if scan_id != None and scan_id != 0 and scan_id != "":
@@ -252,7 +260,7 @@ def add_scan(request, scan_id=None, chosen=None):
             context_dict['target'] = dom.name
             context_dict['chosen_config'] = scan.configuration
         else:
-            context_dict['chosen_config'] = Configuration.objects.all().filter(name="Subdomain discovery").first()
+            context_dict['chosen_config'] = Configuration.objects.all().filter(name="Full scan").first()
         
         if chosen:
             context_dict['chosen_config'] = Configuration.objects.all().filter(id=int(chosen)).first()

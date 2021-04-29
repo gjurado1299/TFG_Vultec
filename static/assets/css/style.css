@@ -143,18 +143,26 @@ strong {
 
 .critical{
   background: linear-gradient(90deg, rgba(143,0,0,1) 0%, rgba(105,0,0,1) 34%);
+  border-radius: 15px;
 }
 
 .high{
   background: linear-gradient(90deg, rgba(255,78,57,1) 0%, rgba(255,46,46,1) 34%);
+  border-radius: 15px;
 }
 
-.low{
+.medium{
   background: linear-gradient(90deg, rgba(255,204,26,1) 0%, rgba(238,158,0,1) 34%);
   border-radius: 15px;
 }
 
+.low{
+  background: linear-gradient(90deg, rgba(76,207,83,1) 0%, rgba(72,254,55,1) 33%, rgba(93,255,114,1) 100%);
+  border-radius: 15px;
+}
+
 .info{
+  
   background: linear-gradient(90deg, rgba(0,161,255,1) 0%, rgba(0,140,255,1) 62%);
   border-radius: 15px;
 }
@@ -359,6 +367,88 @@ p.text-muted {
 
 /* ==========  scrollbar End  ===========
  ==========  card css End  ===========
+ ================================    Swiper slide Start  ===================== */
+
+.form-group.form-check{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: 0px;
+  width: 30px;
+  height: 17px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #33cc66;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #33cc66;
+}
+
+input:checked:disabled + .slider {
+  background-color: #8ECCA3;
+}
+
+input:disabled + .slider {
+  cursor: not-allowed;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 17px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+ /*
+ ================================    Swiper slide End  ===================== 
  ================================    Dropdown Start  ===================== */
 .dropdown-menu {
   padding: 20px 0;
