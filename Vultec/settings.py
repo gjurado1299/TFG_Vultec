@@ -78,6 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Vultec.wsgi.application'
 
+DATA_UPLOAD_MAX_NUMBER_FIELDS  = 100000
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

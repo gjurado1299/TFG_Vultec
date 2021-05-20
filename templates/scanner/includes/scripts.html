@@ -7,13 +7,60 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.data').DataTable();
+            $('.dataTargets').DataTable({
+                "columnDefs": [
+                    { className: "bold", "targets": [ 0 ] }
+                ],
+                "ajax": {
+                    "url": '{% url "load_scan_targets" %}',
+                    "data": {
+                        'scan_id': '{{ scan_id }}'
+                    },
+                    "dataType": "json"
+                }
+            });
+
+            $('.dataWebs').DataTable({
+                "columnDefs": [
+                    { className: "bold", "targets": [ 0 ] }
+                ],
+                "createdRow": function( row, data, dataIndex, cells ) {
+                   $('td', row).eq(2).addClass('status'.concat(data[2].toString().charAt(0))); 
+                }, 
+                "ajax": {
+                    "url": '{% url "load_scan_webs" %}',
+                    "data": {
+                        'scan_id': '{{ scan_id }}'
+                    },
+                    "dataType": "json"
+                }
+            });
+
+            $('.dataVulns').DataTable({
+                "columnDefs": [
+                    { className: "bold", "targets": [ 0 ] }
+                ],
+                "createdRow": function(row, data, dataIndex, cells){
+                    $('td', row).eq(4).wrapInner( "<a class='label text-white f-12 "+ data[4] +"'></a>");
+                },
+                "ajax": {
+                    "url": '{% url "load_scan_vulns" %}',
+                    "data": {
+                        'scan_id': '{{ scan_id }}'
+                    },
+                    "dataType": "json"
+                }
+            });
         } );
     </script>
-
+    <script>
+        $(document).ready(function(){
+            $(".data").DataTable();
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $(".reload").click(function (event) {
@@ -35,32 +82,38 @@
     </script>
 
     <script>
-        function getSeverity(name) {
-            var severityNumber;
-                
-            if (name == "critical"){
-                severityNumber = 1;
-            } else if (name == "high"){
-                severityNumber = 2;
-            } else if (name == "medium") {
-                severityNumber = 3;
-            } else if (name == "low") {
-                severityNumber = 4;
-            } else if (name == "info") {
-                severityNumber = 5;
-            } else {
-                severityNumber = 0;
-            }
-                
-            return severityNumber;
-        }
+        var vulnCanvas = document.getElementById("vulnChart");
 
-        jQuery.fn.dataTableExt.oSort["severity-desc"] = function (x, y) {
-            return getSeverity(x) < getSeverity(y);
+
+        var vulnData = {
+            labels: [
+                "Low",
+                "Medium",
+                "High",
+                "Critical"
+            ],
+            datasets: [{
+                data: [],
+                backgroundColor: [
+                    "#5dff72",
+                    "#ffcc1a",
+                    "#ff4e39",
+                    "#8f0000"
+                ]
+            }]
         };
-                
-        jQuery.fn.dataTableExt.oSort["severity-asc"] = function (x, y) {
-            return getSeverity(x) > getSeverity(y);
-        }
+
+        $.ajax({
+            url: '{% url "get_vuln_count" %}',
+            dataType: 'text'
+        }).done(function(data){
+            var l = data.split('#')
+            vulnData["datasets"][0]["data"] = l
+
+            var pieChart = new Chart(vulnCanvas, {
+                type: 'doughnut',
+                data: vulnData
+            });
+        })
 
     </script>

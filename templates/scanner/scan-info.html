@@ -47,7 +47,7 @@
                                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                             <p class="mb-0 col-md-12">
                                                 <div class="table-responsive">
-                                                    <table class="data table table-striped">
+                                                    <table class="dataTargets table table-striped">
                                                         <thead>
                                                             <tr class="text-info">
                                                                 <th scope="col">Name</th>
@@ -55,15 +55,6 @@
                                                                 <th scope="col">Ports discovered</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody >
-                                                            {% for target in targets %}
-                                                            <tr class="f-16">
-                                                                <td scope="row"><b>{{ target.name }}</b></td>
-                                                                <td>{{ target.ip_address }}</td>
-                                                                <td>{{ target.open_ports }}</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </p>
@@ -71,7 +62,7 @@
                                         <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                             <p class="mb-0">
                                                 <div class="table-responsive">
-                                                    <table class="data table table-striped">
+                                                    <table class="dataWebs table table-striped">
                                                         <thead>
                                                             <tr class="text-info f-18 hov">
                                                                 <th>Domain</th>
@@ -85,21 +76,6 @@
                                                                 <th>Discovered Date</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody >
-                                                            {% for web in webs %}
-                                                            <tr class="f-16">
-                                                                <td><b>{{ web.domain.name }}</b></td>
-                                                                <td>{{ web.port }}</td>
-                                                                <td class="status{{web.http_status|make_list|first}}">{{ web.http_status }}</td>
-                                                                <td>{{ web.web_title }}</td>
-                                                                <td>{{ web.content_length }}</td>
-                                                                <td>{{ web.server }}</td>
-                                                                <td>{{ web.cname }}</td>
-                                                                <td>{{ web.technologies }}</td>
-                                                                <td>{{ web.discovered_date }}</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </p>    
@@ -107,7 +83,7 @@
                                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                             <p class="mb-0">
                                                 <div class="table-responsive">
-                                                    <table class="data table table-striped">
+                                                    <table class="dataVulns table table-striped">
                                                         <thead>
                                                             <tr class="text-info f-18 hov">
                                                                 <th>Host</th>
@@ -121,21 +97,7 @@
                                                                 <th>Timestamp</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody >
-                                                            {% for vuln in vulnerabilities %}
-                                                            <tr class="f-16">
-                                                                <td><b>{{ vuln.host.url }}</b></td>
-                                                                <td>{{ vuln.name }}</td>
-                                                                <td>{{ vuln.page }}</td>
-                                                                <td>{{ vuln.description }}</td>
-                                                                <td><a class="label {{vuln.risk_level}} text-white f-12">{{vuln.risk_level}}</a></td>
-                                                                <td>{{ vuln.template }}</td>
-                                                                <td>{{ vuln.protocol }}</td>
-                                                                <td>{{ vuln.extractor }}</td>
-                                                                <td>{{ vuln.timestamp }}</td>
-                                                            </tr>
-                                                            {% endfor %}
-                                                        </tbody>
+                                                    
                                                     </table>
                                                 </div>
                                             </p>

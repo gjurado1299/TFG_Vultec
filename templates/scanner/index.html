@@ -97,7 +97,8 @@
                         </div>
                         <!--[ discovered hosts section ] end-->
                         <!--[ Recent Users ] start-->
-                        <div class="col-xl-12 col-md-6">
+                        <canvas class="col-xl-6 col-md-6 doghnut-chart" id="vulnChart" ></canvas>
+                        <div class="col-xl-6 col-md-6">
                             <div class="card Recent-Users">
                                 <div class="card-header">
                                     <h5>Top 5 Vulnerabilities Discovered</h5>
@@ -166,15 +167,15 @@
                             </div>
                         </div>
                         <!--[social-media section] start-->
-                        {% if currently_scanning.count == 0%}
-                        <div>
-                            NO CURRENT SCANS
-                        </div>
-                        {% else %}
+                        
                         <div class="col-md-12 col-xl-8">
                             <div class="card card-social">
                                 <div class="border-bottom">
-                                    <h4 class="mt-2 ml-2">Currently Scanning:</h4>
+                                    {% if currently_scanning.count == 0%}
+                                        <h4 class="mt-2 ml-2">No current scans</h4>
+                                    {% else %}
+                                        <h4 class="mt-2 ml-2">Currently Scanning:</h4>
+                                    {% endif %}
                                 </div>
                                 <div class="card-block-fixed">
                                 {% for c in currently_scanning %}
@@ -190,7 +191,6 @@
                                 </div>
                             </div>
                         </div>
-                        {% endif %}
                         <!--[social-media section] start-->
                     </div>
                 </div>

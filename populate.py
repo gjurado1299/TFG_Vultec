@@ -9,9 +9,20 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 django.setup()
 
 from scanner.models import Scan, Configuration, Domain, WebHost, Vulnerability, ScanStatus
+print("Populating")
+for host in list(WebHost.objects.all()):
+    host.scan = host.domain.scan
+    host.save()
 
-config1, c = Configuration.objects.get_or_create(name="Subdomain discovery", default=True)
-config2, c = Configuration.objects.get_or_create(name="Full scan", web_discovery=True, port_scan=True, vulnerability_scan=True, default=True)
+print("Finished hosts")
+
+for vuln in list(Vulnerability.objects.all()):
+    vuln.scan = vuln.host.scan
+    vuln.save()
+
+print("Finished populating")
+""" config1, c = Configuration.objects.get_or_create(name="Subdomain discovery", default=True)
+config2, c = Configuration.objects.get_or_create(name="Full scan", web_discovery=True, port_scan=True, vulnerability_scan=True, default=True) """
 """ Configuration.objects.get_or_create(name="Test scan", web_discovery=True, port_scan=True, vulnerability_scan=False)
 Configuration.objects.get_or_create(name="Test scan 2", web_discovery=False, port_scan=True, vulnerability_scan=False)
 

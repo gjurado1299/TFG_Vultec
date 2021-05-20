@@ -72,7 +72,9 @@
                                                             Reload data
                                                             <ul class="dropdown-menu">
                                                                 <li class="reload" value=0 name="{{target}}" id="{{scan.id}}">Subdomains</li>
-                                                                <li class="reload" value=1 name="{{target}}" id="{{scan.id}}">Vulnerabilities</li>
+                                                                <li class="reload" value=1 name="{{target}}" id="{{scan.id}}">Ports</li>
+                                                                <li class="reload" value=2 name="{{target}}" id="{{scan.id}}">Webs</li>
+                                                                <li class="reload" value=3 name="{{target}}" id="{{scan.id}}">Vulnerabilities</li>
                                                             </ul>
                                                         </button>
                                                         <a href="{% url 'add_scan' scan_id=scan.id %}" class="feather icon-edit-2 text-c-purple f-30 hov"></a> 

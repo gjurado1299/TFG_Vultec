@@ -11,6 +11,8 @@ from django.http import HttpResponse
 from .forms import LoginForm
 from scanner.models import Scan, Configuration, Domain, WebHost, Vulnerability, ScanStatus
 from django.utils import timezone
+from django.core import serializers
+from django.forms.models import model_to_dict
 
 from django.conf import settings as conf_settings
 import subprocess
@@ -27,7 +29,56 @@ def chargeDomains(scan, target):
 
     print("Finished charging domains")
 
-def chargeVulnerabilities(target):
+
+def chargePorts(target):
+    with open(conf_settings.RESULTS_DIR+'/'+target+'/ports_discovered.txt', 'r') as fin:
+        for line in fin:
+            data = {}
+            data = json.loads(line)
+            domain = Domain.objects.filter(name=data['host']).first()
+
+            if domain:
+                port = data.get('port','')
+                if domain.open_ports == "":
+                    domain.open_ports = port
+                else:
+                    if str(port) not in domain.open_ports and port != '':
+                        domain.open_ports += ", {}".format(port)
+
+                domain.save()
+    print("Finished charging ports")
+
+
+def chargeWebs(scan, target):
+    with open(conf_settings.RESULTS_DIR+'/'+target+'/webalives.txt', 'r') as fin:
+        with open(conf_settings.RESULTS_DIR+'/'+target+'/webalives_scan.txt', 'w') as fout:
+            for line in fin:
+                data = {}
+                data = json.loads(line)
+                
+                url = data.get('url','')
+                _, domain_name, port = url.split(':')
+                domain = Domain.objects.filter(name=domain_name[2:]).first()
+                if domain:
+                    
+                    domain.ip_address = data.get('host', '')
+                    domain.save()
+                    cname = ''
+                    techs = ''
+
+                    if 'cnames' in data:
+                        cname = ', '.join(data['cnames'])
+
+                    if 'technologies' in data:
+                        techs = ', '.join(data['technologies'])
+
+                    WebHost.objects.get_or_create(domain=domain, scan=scan, http_status=data.get('status-code', int()), url=url, port=port, web_title=data.get('title',''), server=data.get('webserver',''), 
+                                                cname=cname, content_length=data.get('content-length', int()), technologies=techs)
+                    fout.write(url+"\n")
+    print("Finished charging webs")
+    
+
+def chargeVulnerabilities(scan, target):
     with open(conf_settings.RESULTS_DIR+'/'+target+'/nuclei_results_draft.txt', 'r') as f:
         i = 0
         for line in f:
@@ -41,9 +92,23 @@ def chargeVulnerabilities(target):
             #    extracted  = '|'.join(data['extracted_results'])
             if host:
                 
-                Vulnerability.objects.get_or_create(host=host, name=data['info']['name'], page=data['matched'].replace(data['host'], ''), description=data['info'].get('description',''), risk_level=data['info']['severity'], template=data['templateID'], protocol=data['type'], extractor=extracted)
+                Vulnerability.objects.get_or_create(host=host, scan=scan, name=data['info']['name'], page=data['matched'].replace(data['host'], ''), description=data['info'].get('description',''), risk_level=data['info']['severity'], template=data['templateID'], protocol=data['type'], extractor=extracted)
     
     print("Finished charging vulnerabilities")
+
+
+def get_vuln_count(request):
+    data = ""
+    severity_count = {}
+    for v in list(Vulnerability.objects.all()):
+        severity = v.risk_level
+        if severity not in severity_count:
+            severity_count[severity] = 0
+        severity_count[severity] += 1
+    
+
+    data = "#".join(str(e) for e in list(severity_count.values())[1:])
+    return HttpResponse(data, content_type="text/plain")
 
 
 def runScripts(scan, target):
@@ -57,57 +122,18 @@ def runScripts(scan, target):
         if scan.configuration.port_scan:
             print("DISCOVERING PORTS thread nº {}".format(threading.get_ident()))
             subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/port_scan.sh', target])
-            with open(conf_settings.RESULTS_DIR+'/'+target+'/ports_discovered.txt', 'r') as fin:
-                for line in fin:
-                    data = {}
-                    data = json.loads(line)
-                    domain = Domain.objects.filter(name=data['host']).first()
-
-                    if domain:
-                        port = data.get('port','')
-                        if domain.open_ports == "":
-                            domain.open_ports = port
-                        else:
-                            if str(port) not in domain.open_ports and port != '':
-                                domain.open_ports += ", {}".format(port)
-
-                        domain.save()
+            chargePorts(target)
 
 
         if scan.configuration.web_discovery:
             print("DISCOVERING WEBS thread nº {}".format(threading.get_ident()))
             subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/web_alives.sh', target ]) 
-
-            with open(conf_settings.RESULTS_DIR+'/'+target+'/webalives.txt', 'r') as fin:
-                with open(conf_settings.RESULTS_DIR+'/'+target+'/webalives_scan.txt', 'w') as fout:
-                    for line in fin:
-                        data = {}
-                        data = json.loads(line)
-                        
-                        url = data.get('url','')
-                        _, domain_name, port = url.split(':')
-                        domain = Domain.objects.filter(name=domain_name[2:]).first()
-                        if domain:
-                            
-                            domain.ip_address = data.get('host', '')
-                            domain.save()
-                            cname = ''
-                            techs = ''
-
-                            if 'cnames' in data:
-                                cname = ', '.join(data['cnames'])
-
-                            if 'technologies' in data:
-                                techs = ', '.join(data['technologies'])
-
-                            WebHost.objects.get_or_create(domain=domain, http_status=data.get('status-code', int()), url=url, port=port, web_title=data.get('title',''), server=data.get('webserver',''), 
-                                                        cname=cname, content_length=data.get('content-length', int()), technologies=techs)
-                            fout.write(url+"\n")
+            chargeWebs(scan, target)
         
         if scan.configuration.vulnerability_scan:
             print("DISCOVERING VULNERABILITIES thread nº {}".format(threading.get_ident()))
             subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/vulnerabilities.sh', target ]) 
-            chargeVulnerabilities(target)
+            chargeVulnerabilities(scan, target)
 
         scan.scan_status = ScanStatus.FINISHED.value
 
@@ -131,7 +157,11 @@ def reload_any(request):
     if option == 0:
         chargeDomains(scan, target)
     elif option == 1:
-        chargeVulnerabilities(target)
+        chargePorts(target)
+    elif option == 2:
+        chargeWebs(scan, target)
+    elif option == 3:
+        chargeVulnerabilities(scan, target)
 
     scan.scan_status = ScanStatus.FINISHED.value
     if scan.last_scan_date is None:
@@ -188,6 +218,13 @@ def scan_configuration(request, select=-1):
             return redirect('add_scan')
 
     return render(request, 'scanner/scan-config.html', context=context_dict)
+
+
+@login_required(login_url="/scanner/login/")
+def vulnerabilities(request):
+    context_dict = {}
+    context_dict['organizations'] = Scan.objects.all()
+    return render(request, 'scanner/vulnerabilities.html', context=context_dict)
 
 
 @login_required(login_url="/scanner/login/")
@@ -310,6 +347,65 @@ def delete_scan(request, scan_id=None):
     return redirect("/scanner/scans/")
 
 
+def load_scan_targets(request):
+
+    scan_id = int(request.GET.get('scan_id', -1))
+    targets = []
+    data = {}
+
+    if scan_id != -1:
+        scan = Scan.objects.filter(id=scan_id).first()
+        targets = list(Domain.objects.filter(scan=scan).values_list('name', 'ip_address', 'open_ports'))
+    
+    data['data'] = [*map(list, targets)]
+    return HttpResponse(json.dumps(data, default=str), content_type="application/json")
+
+
+def load_scan_webs(request):
+
+    scan_id = int(request.GET.get('scan_id', -1))
+    webs = []
+    data = {}
+    if scan_id != -1:
+        scan = Scan.objects.filter(id=scan_id).first()
+        webs = list(WebHost.objects.filter(scan=scan).values_list('domain__name', 'port', 'http_status', 'web_title', 'content_length', 
+                                                                  'server', 'cname', 'technologies', 'discovered_date'))
+    
+    data['data'] = [*map(list, webs)]
+    return HttpResponse(json.dumps(data, default=str), content_type="application/json")
+
+
+
+def load_scan_vulns(request):
+
+    id = request.GET.get('scan_id', -1)
+    scan_id = -1
+    if id != "":
+        scan_id = int(id)
+
+    vulns = []
+    data = {}
+    print("SCAN ID: {}".format(scan_id))
+    if scan_id != -1:
+        start = time.time()
+        scan = Scan.objects.filter(id=scan_id).first()
+        end = time.time()
+        print("Time finding scan: {}".format(end-start))
+
+        start = time.time()
+        vulns = list(Vulnerability.objects.filter(scan=scan).values_list('host__url', 'name', 'page', 'description', 'risk_level', 
+                                                                  'template', 'protocol', 'extractor', 'timestamp'))
+        end = time.time()
+        print("Time filtering vulnerabilities: {}".format(end-start))
+    else:
+        vulns = list(Vulnerability.objects.all().values_list('host__url', 'name', 'page', 'description', 'risk_level', 
+                                                                'template', 'protocol', 'extractor', 'timestamp'))
+
+    data['data'] = [*map(list, vulns)]
+    return HttpResponse(json.dumps(data, default=str), content_type="application/json")
+
+
+    
 @login_required(login_url="/scanner/login/")
 def scan_info(request, scan_id=None):
 
@@ -317,35 +413,7 @@ def scan_info(request, scan_id=None):
     context_dict['organizations'] = Scan.objects.all()
 
     if scan_id:
-        start = time.time()
-        scan = Scan.objects.filter(id=scan_id).first()
-        end = time.time()
-        print("Time finding scan: {}".format(end-start))
-
-        context_dict['scan'] = scan
-        start = time.time()
-        context_dict['targets'] = list(Domain.objects.filter(scan=scan))
-        end = time.time()
-        print("Time filtering targets: {}".format(end-start))
-
-        context_dict['webs'] = []
-        context_dict['vulnerabilities'] = []
-
-        start = time.time()
-        for target in context_dict['targets']:
-            if target.hosts.count() > 0:
-                context_dict['webs'].extend(list(target.hosts.all()))
-        end = time.time()
-        print("Time filtering webs: {}".format(end-start))
-
-        start = time.time()
-        for web in context_dict['webs']:
-            if web.vulnerabilities.count() > 0:
-                context_dict['vulnerabilities'].extend(list(web.vulnerabilities.all()))
-            
-        end = time.time()
-        print("Time filtering vulnerabilities: {}".format(end-start))
-
+        context_dict['scan_id'] = scan_id
         return render(request, 'scanner/scan-info.html', context=context_dict)
 
     return redirect("/scanner/")

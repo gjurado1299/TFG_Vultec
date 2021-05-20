@@ -167,6 +167,10 @@ strong {
   border-radius: 15px;
 }
 
+.bold{
+  font-weight: bold;
+}
+
 .status1{
   font-weight: bold;
   color: lightblue;
@@ -358,6 +362,10 @@ p.text-muted {
 .card.full-card {
   z-index: 99999;
   border-radius: 0;
+}
+
+.doghnut-chart{
+  padding-bottom: 30px;
 }
 
 /* ==========  scrollbar End  =========== */
@@ -8170,10 +8178,10 @@ a.btn-theme.active {
 
 .btn-msg-Never {
   padding: 0%;
-  color: grey;
+  color: rgb(67, 186, 255);
   background-color: transparent;
   background-image: none;
-  border-color: grey;
+  border-color: rgb(35, 174, 255);
 }
 
 .btn-msg-Error {

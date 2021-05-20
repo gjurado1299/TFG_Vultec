@@ -1,0 +1,66 @@
+{% extends "scanner/layouts/base.html" %}
+
+{% block title %} Vulnerabilities {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Vultec vulnerabilities</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Vulnerabilities discovered</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active">
+                        <p class="mb-0 col-md-12">
+                            <div class="table-responsive">
+                                <table class="dataVulns total-vulns table table-striped">
+                                    <thead>
+                                        <tr class="text-info f-18 hov">
+                                            <th>Host</th>
+                                            <th>Name</th>
+                                            <th>Page</th>
+                                            <th>Description</th>
+                                            <th>Severity</th>
+                                            <th>Template</th>
+                                            <th>Protocol</th>
+                                            <th>Extractor</th>
+                                            <th>Timestamp</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </p>    
+                    </div>
+                    <!-- [ tabs ] end -->
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
+
+                                                            
+                        

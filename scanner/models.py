@@ -49,6 +49,7 @@ class Domain(models.Model):
 
 class WebHost(models.Model):
     domain = models.ForeignKey(Domain, on_delete=models.CASCADE, db_index=True, related_name="hosts")
+    scan = models.ForeignKey(Scan, on_delete=models.CASCADE, db_index=True, null=True)
     http_status = models.IntegerField(null=True)
     url = models.CharField(max_length=200, null=True)
     description = models.TextField(blank=True, null=True)
@@ -67,6 +68,7 @@ class WebHost(models.Model):
 
 class Vulnerability(models.Model):
     host = models.ForeignKey(WebHost, on_delete=models.CASCADE, db_index=True, related_name="vulnerabilities")
+    scan = models.ForeignKey(Scan, on_delete=models.CASCADE, db_index=True, null=True)
     name = models.CharField(max_length=100, null=True)
     page = models.CharField(max_length=1000, null=True)
     description = models.TextField(blank=True, null=True)

@@ -15,11 +15,11 @@ class DomainAdmin(admin.ModelAdmin):
                     'open_ports', 'start_domain')
 
 class WebHostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'domain', 'http_status', 'url',
+    list_display = ('id', 'domain', 'scan', 'http_status', 'url',
                     'description', 'port', 'web_title', 'content_length', 'discovered_date')
 
 class VulnerabilityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'host', 'name', 'page', 'description', 'risk_level', 'template',
+    list_display = ('id', 'host', 'scan', 'name', 'page', 'description', 'risk_level', 'template',
                     'protocol', 'extractor','timestamp')
 
 # Register your models here
