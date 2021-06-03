@@ -64,7 +64,7 @@
                                                 <div class="form-group form-check">
                                                     <label class="form-check-label" for="exampleCheck1">Web Discovery</label>
                                                     <label class="switch">
-                                                        <input name="web_discovery" type="checkbox" class="form-check-input ml-2" id="exampleCheck1" 
+                                                        <input name="web_discovery" type="checkbox" class="form-check-input ml-2" id="web_discovery" 
                                                             {% if c.web_discovery %} checked {% endif %}
                                                             {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
                                                         <span class="slider round"></span>
@@ -73,7 +73,7 @@
                                                 <div class="form-group form-check ml-auto">
                                                     <label class="form-check-label" for="exampleCheck1">Port scan</label>
                                                     <label class="switch">
-                                                        <input name="port_scan" type="checkbox" class="form-check-input ml-2" id="exampleCheck1" 
+                                                        <input name="port_scan" type="checkbox" class="form-check-input ml-2" id="port_scan" 
                                                             {% if c.port_scan %} checked {% endif %}
                                                             {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
                                                         <span class="slider round"></span>
@@ -82,16 +82,54 @@
                                                 <div class="form-group form-check">
                                                     <label class="form-check-label" for="exampleCheck1">Subdomain discovery</label>
                                                     <label class="switch">
-                                                        <input name="subdomain_discovery" type="checkbox" class="form-check-input ml-2" id="exampleCheck1" 
+                                                        <input name="subdomain_discovery" type="checkbox" value="{{c.id}}" class="form-check-input ml-2 subdomain_discovery" 
                                                             {% if c.subdomain_discovery %} checked {% endif %}
                                                             {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </div>
+                                                <div class="subdomain_options {{c.id}}">
+                                                    <div class="form-group form-check">
+                                                        <label class="form-check-label" for="exampleCheck1">Amass</label>
+                                                        <label class="switch">
+                                                            <input name="tool_amass" type="checkbox" class="form-check-input ml-2" id="tool_amass" 
+                                                                {% if c.tool_amass %} checked {% endif %}
+                                                                {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group form-check">
+                                                        <label class="form-check-label" for="exampleCheck1">Subfinder</label>
+                                                        <label class="switch">
+                                                            <input name="tool_subfinder" type="checkbox" class="form-check-input ml-2" id="tool_subfinder" 
+                                                                {% if c.tool_subfinder %} checked {% endif %}
+                                                                {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group form-check">
+                                                        <label class="form-check-label" for="exampleCheck1">AssetFinder</label>
+                                                        <label class="switch">
+                                                            <input name="tool_assetfinder" type="checkbox" class="form-check-input ml-2" id="tool_assetfinder" 
+                                                                {% if c.tool_assetfinder %} checked {% endif %}
+                                                                {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group form-check">
+                                                        <label class="form-check-label" for="exampleCheck1">Brute Force</label>
+                                                        <label class="switch">
+                                                            <input name="tool_bruteforce" type="checkbox" class="form-check-input ml-2" id="tool_bruteforce" 
+                                                                {% if c.tool_bruteforce %} checked {% endif %}
+                                                                {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group form-check">
                                                     <label class="form-check-label" for="exampleCheck1">Vulnerability Scan</label>
                                                     <label class="switch">
-                                                        <input name="vulnerability_scan" type="checkbox" class="form-check-input ml-2" id="exampleCheck1" 
+                                                        <input name="vulnerability_scan" type="checkbox" class="form-check-input ml-2" id="vulnerability_scan" 
                                                             {% if c.vulnerability_scan %} checked {% endif %}
                                                             {% if c.default or select %} disabled {% else %} onChange="enableButton({{c.id}})" {% endif %}>
                                                         <span class="slider round"></span>

@@ -117,3 +117,20 @@
         })
 
     </script>
+
+    <script>
+        $(document).ready(function(){
+            $('.subdomain_discovery').each(function(index){
+                if(this.checked){
+                    $('.subdomain_options.'+this.value).show()
+                }else{
+                    $('.subdomain_options.'+this.value).hide()
+                    $('.subdomain_options.unique').hide()
+                }
+            });
+            $('.subdomain_discovery').change(function(){
+                $('.subdomain_options.'+this.value).slideToggle('slow');
+                $('.subdomain_options.unique').slideToggle('slow');
+            });
+        });
+    </script>

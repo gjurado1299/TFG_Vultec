@@ -16,6 +16,10 @@ class Configuration(models.Model):
     web_discovery = models.BooleanField(default=False)
     port_scan = models.BooleanField(default=False)
     subdomain_discovery = models.BooleanField(default=True)
+    tool_amass = models.BooleanField(default=False)
+    tool_subfinder = models.BooleanField(default=False)
+    tool_assetfinder = models.BooleanField(default=False)
+    tool_bruteforce = models.BooleanField(default=False)
     vulnerability_scan = models.BooleanField(default=False)
     default = models.BooleanField(default=False)
 

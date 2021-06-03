@@ -115,8 +115,15 @@ def runScripts(scan, target):
     try:
         scan.last_error_log = ""
         if scan.configuration.subdomain_discovery:
+            flags = ""
             print("DISCOVERING SUBDOMAINS thread nº {}".format(threading.get_ident()))
-            subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/find_subdomains.sh', '-d', target, '-all']) 
+            if scan.configuration.tool_amass: flags += " -A"
+            if scan.configuration.tool_assetfinder: flags += " -aF"
+            if scan.configuration.tool_subfinder: flags += " -sF"
+            if scan.configuration.tool_bruteforce: flags += " -BF"
+
+            print(flags)
+            subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/find_subdomains.sh', '-d', target, flags]) 
             chargeDomains(scan, target)
 
         if scan.configuration.port_scan:
@@ -192,10 +199,8 @@ def index(request):
 def scan_configuration(request, select=-1):
     context_dict = {}
     context_dict['organizations'] = Scan.objects.all()
-
     if request.method == 'GET':
         context_dict['configurations'] = Configuration.objects.all()
-
         if select < 0:
             context_dict['select'] = False
             context_dict['scan'] = None
@@ -207,7 +212,6 @@ def scan_configuration(request, select=-1):
         scan_id = request.POST.get('scan_id')
         if scan_id == "":
             scan_id = None
-
         if selectedConf and scan_id:
             return redirect('add_scan', scan_id=scan_id, chosen=str(selectedConf))
         elif selectedConf:
@@ -315,12 +319,20 @@ def add_config(request, conf_id=None):
         vulnerability_scan = request.POST.get('vulnerability_scan')
         port_scan = request.POST.get('port_scan')
         subdomain_discovery = request.POST.get('subdomain_discovery')
+        tool_amass = request.POST.get('tool_amass')
+        tool_subfinder = request.POST.get('tool_subfinder')
+        tool_assetfinder = request.POST.get('tool_assetfinder')
+        tool_bruteforce = request.POST.get('tool_bruteforce')
 
         if(conf_id):
             config = Configuration.objects.get(id=conf_id)
             config.web_discovery = (web_discovery == 'on')
             config.port_scan = (port_scan == 'on')
             config.subdomain_discovery = (subdomain_discovery == 'on')
+            config.tool_amass = (tool_amass == 'on')
+            config.tool_subfinder = (tool_subfinder == 'on')
+            config.tool_assetfinder = (tool_assetfinder == 'on')
+            config.tool_bruteforce = (tool_bruteforce == 'on')
             config.vulnerability_scan = (vulnerability_scan == 'on')
             config.save()
         else:
@@ -328,6 +340,10 @@ def add_config(request, conf_id=None):
             c = Configuration.objects.create(web_discovery=(web_discovery == 'on'), 
                                             port_scan=(port_scan == 'on'), 
                                             subdomain_discovery=(subdomain_discovery == 'on'), 
+                                            tool_amass=(tool_amass == 'on'), 
+                                            tool_subfinder=(tool_subfinder == 'on'), 
+                                            tool_assetfinder=(tool_assetfinder == 'on'), 
+                                            tool_bruteforce=(tool_bruteforce == 'on'), 
                                             vulnerability_scan=(vulnerability_scan == 'on'))
             if(conf_name != ""):
                 c.name = conf_name
