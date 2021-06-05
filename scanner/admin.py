@@ -8,7 +8,11 @@ class ScanAdmin(admin.ModelAdmin):
 
 class ConfigurationAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'web_discovery', 'port_scan',
-                    'subdomain_discovery', 'vulnerability_scan')
+                    'subdomain_discovery','tool_amass','tool_subfinder',
+                    'tool_assetfinder','tool_bruteforce', 'vulnerability_scan')
+    list_editable = ('name', 'web_discovery', 'port_scan',
+                    'subdomain_discovery','tool_amass','tool_subfinder',
+                    'tool_assetfinder','tool_bruteforce', 'vulnerability_scan')
 
 class DomainAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'scan', 'ip_address',

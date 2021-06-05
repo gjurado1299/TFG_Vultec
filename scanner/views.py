@@ -87,7 +87,6 @@ def chargeVulnerabilities(scan, target):
             extracted = ''
             host = WebHost.objects.filter(url=data.get('host','')).first()
             i += 1
-            print("Line number {}".format(i), end="\r")
             #if 'extracted_results' in data:
             #    extracted  = '|'.join(data['extracted_results'])
             if host:
@@ -122,7 +121,6 @@ def runScripts(scan, target):
             if scan.configuration.tool_subfinder: flags += " -sF"
             if scan.configuration.tool_bruteforce: flags += " -BF"
 
-            print(flags)
             subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/find_subdomains.sh', '-d', target, flags]) 
             chargeDomains(scan, target)
 
@@ -401,7 +399,6 @@ def load_scan_vulns(request):
 
     vulns = []
     data = {}
-    print("SCAN ID: {}".format(scan_id))
     if scan_id != -1:
         start = time.time()
         scan = Scan.objects.filter(id=scan_id).first()
@@ -476,12 +473,6 @@ def pages(request, html):
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
-        '''print(request.path)
-        load_template = request.path.split('/')[-1]
-        context['segment'] = load_template
-        
-        html_template = loader.get_template(load_template)
-        return HttpResponse(html_template.render(context, request))'''
         return render(request, request.path[1:])
         
     except template.TemplateDoesNotExist:

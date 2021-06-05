@@ -97,7 +97,7 @@
                         </div>
                         <!--[ discovered hosts section ] end-->
                         <!--[ Recent Users ] start-->
-                        <canvas class="col-xl-6 col-md-6 doghnut-chart" id="vulnChart" ></canvas>
+                        
                         <div class="col-xl-6 col-md-6">
                             <div class="card Recent-Users">
                                 <div class="card-header">
@@ -131,7 +131,16 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Donut Chart</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div id="doghnut-vulns" style="height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
             
                         <!--[social-media section] start-->
                         <div class="col-md-12 col-xl-4">
@@ -200,5 +209,6 @@
 
 {% endblock content %}
 
+<!-- Specific Page JS goes HERE  -->
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}{% endblock javascripts %}

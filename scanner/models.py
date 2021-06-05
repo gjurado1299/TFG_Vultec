@@ -35,7 +35,8 @@ class Scan(models.Model):
     configuration = models.ForeignKey(Configuration, on_delete=models.CASCADE)
     last_scan_date = models.DateTimeField(null=True)
     last_error_log = models.CharField(max_length=500, default="")
-
+    current_thread = models.CharField(max_length=200, null=True, blank=True, default=None)
+    
     def __str__(self):
         return self.organization_name
 

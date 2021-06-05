@@ -368,8 +368,9 @@ p.text-muted {
   border-radius: 0;
 }
 
-.doghnut-chart{
-  padding-bottom: 30px;
+
+.card.doghnut{
+  padding-bottom: 42px;
 }
 
 /* ==========  scrollbar End  =========== */
