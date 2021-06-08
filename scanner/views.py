@@ -113,9 +113,10 @@ def get_vuln_count(request):
 def runScripts(scan, target):
     try:
         scan.last_error_log = ""
+        scan.current_thread = threading.get_ident()
         if scan.configuration.subdomain_discovery:
             flags = ""
-            print("DISCOVERING SUBDOMAINS thread nº {}".format(threading.get_ident()))
+            print("DISCOVERING SUBDOMAINS thread nº {}".format(scan.current_thread))
             if scan.configuration.tool_amass: flags += " -A"
             if scan.configuration.tool_assetfinder: flags += " -aF"
             if scan.configuration.tool_subfinder: flags += " -sF"
@@ -125,18 +126,18 @@ def runScripts(scan, target):
             chargeDomains(scan, target)
 
         if scan.configuration.port_scan:
-            print("DISCOVERING PORTS thread nº {}".format(threading.get_ident()))
+            print("DISCOVERING PORTS thread nº {}".format(scan.current_thread))
             subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/port_scan.sh', target])
             chargePorts(target)
 
 
         if scan.configuration.web_discovery:
-            print("DISCOVERING WEBS thread nº {}".format(threading.get_ident()))
+            print("DISCOVERING WEBS thread nº {}".format(scan.current_thread))
             subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/web_alives.sh', target ]) 
             chargeWebs(scan, target)
         
         if scan.configuration.vulnerability_scan:
-            print("DISCOVERING VULNERABILITIES thread nº {}".format(threading.get_ident()))
+            print("DISCOVERING VULNERABILITIES thread nº {}".format(scan.current_thread))
             subprocess.call([str(conf_settings.SCRIPTS_DIR)+'/vulnerabilities.sh', target ]) 
             chargeVulnerabilities(scan, target)
 
@@ -149,6 +150,7 @@ def runScripts(scan, target):
         
     finally:
         print("SCAN FINISHED")
+        scan.current_thread = None
         scan.last_scan_date = timezone.now()
         scan.save()
 
@@ -174,6 +176,7 @@ def reload_any(request):
 
     scan.save()
     return redirect("/scanner/scans/")
+
 
 @login_required(login_url="/scanner/login/")
 def index(request):
@@ -360,6 +363,20 @@ def delete_scan(request, scan_id=None):
     
     return redirect("/scanner/scans/")
 
+
+@login_required(login_url="/scanner/login/")
+def stop_scan(request, scan_id=None):
+
+    if scan_id:
+        scan = Scan.objects.filter(id=scan_id).first()
+        if scan.current_thread != None:
+            
+            print("SCAN STOPPED")
+            scan.current_thread = None
+            scan.last_scan_date = timezone.now()
+            scan.save()
+    
+    return redirect("/scanner/scans/")
 
 def load_scan_targets(request):
 

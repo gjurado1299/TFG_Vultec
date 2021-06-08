@@ -79,6 +79,7 @@
                                                         </button>
                                                         <a href="{% url 'add_scan' scan_id=scan.id %}" class="feather icon-edit-2 text-c-purple f-30 hov"></a> 
                                                         <a href="{% url 'run_scan' scan_id=scan.id %}" class="feather icon-play text-success f-30 hov"></a>
+                                                        <a href="{% url 'stop_scan' scan_id=scan.id %}" class="feather icon-stop-circle text-warning f-30 hov"></a>
                                                         <a href="{% url 'delete_scan' scan_id=scan.id %}" class="feather icon-trash-2 text-danger f-30 hov" 
                                                             onclick="return confirm('Are you sure? This will delete all the subdomains and Vulnerabilities found with this scan.')"></a></td>
                                                 </tr>

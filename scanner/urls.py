@@ -20,6 +20,7 @@ urlpatterns = [
     path('add-conf/', views.add_config, name='add_conf'),
     path('add-conf/<int:conf_id>/', views.add_config, name='add_conf'),
     path('delete-scan/<int:scan_id>/', views.delete_scan, name='delete_scan'),
+    path('stop-scan/<int:scan_id>/', views.stop_scan, name='stop_scan'),
     path('delete-config/<int:conf_id>/', views.delete_config, name='delete_config'),
     path('register/', views.register_user, name="register"),
     path('logout/', LogoutView.as_view(), name='logout'),

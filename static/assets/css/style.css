@@ -368,11 +368,20 @@ p.text-muted {
   border-radius: 0;
 }
 
-
 .card.doghnut{
-  padding-bottom: 42px;
+  padding-bottom: 50px;
 }
 
+table td {
+  max-width: 400px;
+  overflow: hidden;
+  position:relative;
+  text-overflow: ellipsis;
+}
+
+table td.action{
+  overflow:visible;
+}
 /* ==========  scrollbar End  =========== */
 .scroll-y {
   z-index: 1027;
@@ -2440,6 +2449,7 @@ input:checked + .slider:before {
 .pcoded-navbar .pcoded-submenu {
   background: #39465e;
   padding: 15px 0;
+  overflow-y: scroll;
 }
 .pcoded-navbar a {
   color: #a9b7d0;

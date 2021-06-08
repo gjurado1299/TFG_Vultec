@@ -14,37 +14,42 @@
 
     <script>
         $(document).ready(function() {
-            var graph = Morris.Donut({
-                element: 'doghnut-vulns',
-                data: [{
-                        value: 60,
-                        label: 'Data 1'
-                    },
-                    {
-                        value: 20,
-                        label: 'Data 1'
-                    },
-                    {
-                        value: 10,
-                        label: 'Data 1'
-                    },
-                    {
-                        value: 5,
-                        label: 'Data 1'
-                    }
-                ],
-                colors: [
-                    '#1de9b6',
-                    '#A389D4',
-                    '#04a9f5',
-                    '#1dc4e9',
-                ],
-                resize: true,
-                formatter: function(x) {
-                    return "val : " + x
-                }
+            $.ajax({
+                url: '{% url "get_vuln_count" %}',
+                dataType: 'text'
+            }).done(function(data){
+                var l = data.split('#')
+                var vulns = [{
+                            value: l[0],
+                            label: 'Low'
+                        },
+                        {
+                            value: l[1],
+                            label: 'Medium'
+                        },
+                        {
+                            value: l[2],
+                            label: 'High'
+                        },
+                        {
+                            value: l[3],
+                            label: 'Critical'
+                        }
+                    ]
+
+                var graph = Morris.Donut({
+                    element: 'doghnut-vulns',
+                    data: vulns,
+                    colors: [
+                        "#5dff72",
+                        "#ffcc1a",
+                        "#ff4e39",
+                        "#8f0000"
+                    ],
+                    resize: true
+                });
+            })
         });
-    });
     </script>
     <script>
         $(document).ready(function() {
@@ -119,43 +124,6 @@
                 }); 
             });
         });
-    </script>
-
-    <script>
-        var vulnCanvas = document.getElementById("vulnChart");
-
-
-        var vulnData = {
-            labels: [
-                "Low",
-                "Medium",
-                "High",
-                "Critical"
-            ],
-            datasets: [{
-                data: [],
-                backgroundColor: [
-                    "#5dff72",
-                    "#ffcc1a",
-                    "#ff4e39",
-                    "#8f0000"
-                ]
-            }]
-        };
-
-        $.ajax({
-            url: '{% url "get_vuln_count" %}',
-            dataType: 'text'
-        }).done(function(data){
-            var l = data.split('#')
-            vulnData["datasets"][0]["data"] = l
-
-            var pieChart = new Chart(vulnCanvas, {
-                type: 'doughnut',
-                data: vulnData
-            });
-        })
-
     </script>
 
     <script>
