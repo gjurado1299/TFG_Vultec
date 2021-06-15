@@ -83,6 +83,7 @@ def chargeVulnerabilities(scan, target):
         i = 0
         for line in f:
             data = {}
+            print(line)
             data = json.loads(line)
             extracted = ''
             host = WebHost.objects.filter(url=data.get('host','')).first()

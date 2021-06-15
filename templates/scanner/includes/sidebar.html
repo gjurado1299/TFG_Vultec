@@ -36,7 +36,7 @@
 
                     <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
                         <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-globe"></i></span><span class="pcoded-mtext">Organizations</span></a>
-                        <ul class="pcoded-submenu">
+                        <ul class="pcoded-submenu organizations-menu">
                             {% for scan in organizations %}
                                 <li class=""><a href="{% url 'scan_info' scan_id=scan.id %}" class="">{{scan.organization_name}}</a></li>
                             {% endfor %}

@@ -2449,8 +2449,13 @@ input:checked + .slider:before {
 .pcoded-navbar .pcoded-submenu {
   background: #39465e;
   padding: 15px 0;
-  overflow-y: scroll;
 }
+
+.organizations-menu{
+  overflow-y: scroll;
+  max-height: 500px;
+}
+
 .pcoded-navbar a {
   color: #a9b7d0;
 }
