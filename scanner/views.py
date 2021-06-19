@@ -83,15 +83,11 @@ def chargeVulnerabilities(scan, target):
         i = 0
         for line in f:
             data = {}
-            print(line)
             data = json.loads(line)
             extracted = ''
             host = WebHost.objects.filter(url=data.get('host','')).first()
             i += 1
-            #if 'extracted_results' in data:
-            #    extracted  = '|'.join(data['extracted_results'])
             if host:
-                
                 Vulnerability.objects.get_or_create(host=host, scan=scan, name=data['info']['name'], page=data['matched'].replace(data['host'], ''), description=data['info'].get('description',''), risk_level=data['info']['severity'], template=data['templateID'], protocol=data['type'], extractor=extracted)
     
     print("Finished charging vulnerabilities")
@@ -145,7 +141,7 @@ def runScripts(scan, target):
         scan.scan_status = ScanStatus.FINISHED.value
 
     except Exception as e:
-        print("SCAN ERROR: {}".format(e.__traceback__s))
+        print("SCAN ERROR: {}".format(e))
         scan.scan_status = ScanStatus.ERROR.value
         scan.last_error_log = str(e)
         
